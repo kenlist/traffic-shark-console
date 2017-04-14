@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load staticfiles %}
+{% load bootstrap_themes %}
+  <head>
+  <title>{{ ts_console_settings.SHORT_TITLE }}</title>
+  <meta charset="utf-8">
+  <meta name="description" content="{{ ts_console_settings.TITLE }}" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!-- React.js -->
+  <script src="//cdnjs.cloudflare.com/ajax/libs/es5-shim/2.2.0/es5-shim.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/es5-shim/2.2.0/es5-sham.min.js"></script>
+  <script src="{% static 'vendor/react/react-0.13.3.js' %}"></script>
+  <script src="{% static 'vendor/react/JSXTransformer-0.13.3.js' %}"></script>
+  <script type="text/jsx" src="{% static 'js/ts-api.js' %}"></script>
+  <script type="text/jsx" src="{% static 'js/ts-utils.js' %}"></script>
+  <script type="text/jsx" src="{% static 'js/ts-machine-panel.js' %}"></script>
+  <script type="text/jsx" src="{% static 'js/ts-setting-panel.js' %}"></script>
+  <script type="text/jsx" src="{% static 'js/ts-profile-panel.js' %}"></script>
+  <script type="text/jsx" src="{% static 'js/ts-ui.js' %}"></script>
+
+  <link rel="stylesheet" href="{% static 'css/ts.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/modal-box.css' %}" />
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="{% static 'static_jquery/js/jquery.min.js' %}"></script>
+
+  <!-- Bootstrap CSS -->
+  {% bootstrap_styles theme='default' type='min.css' %}
+  <!-- Bootstrap JS -->
+  {% bootstrap_script use_min=True %}
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+  </head>
+  <body>
+      <div class="container">
+        <div class="starter-template">
+          <h1>{{ ts_console_settings.TITLE }}</h1>
+          {% block content %}{% endblock %}
+        </div>
+      </div>
+      <div id="modalOverlay" class="mb-overlay"></div>
+      <div id="modalContainer" class="mb-container">
+        <div id="modalContent" class="mb-content container"></div>
+      </div>
+  </body>
+</html>

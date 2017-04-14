@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<div id="ts_console_ui">
+
+</div>
+
+<script type="text/jsx">
+  React.render(
+    <TrafficSharkUI endpoint="{{ ts_console_settings.REST_ENDPOINT }}" />,
+    document.getElementById('ts_console_ui')
+  );
+</script>
+
+{% endblock %}
