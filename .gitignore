@@ -3,3 +3,5 @@ packages
 
 __init__.py
 db.sqlite3
+
+traffic_shark_thrift
