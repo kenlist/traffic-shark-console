@@ -30,7 +30,7 @@ class ProfilePanel extends React.Component {
       var tc_setting = this.props.profiles[profile_name];
       ReactDOM.render(
       <div className="mb-content">
-        <ProfileSettingPanel name={profile_name} tc_setting={tc_setting} onProfileConfirm={this.props.onProfileUpdate.bind(this)} />
+        <ProfileSettingPanel name={profile_name} tc_setting={tc_setting} onProfileConfirm={this.props.onProfileUpdate} />
       </div>, document.getElementById('modalContainer'));
       showPanel();
     }

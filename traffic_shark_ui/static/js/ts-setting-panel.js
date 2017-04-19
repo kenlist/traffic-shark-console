@@ -129,7 +129,6 @@ class ProfileSettingPanel extends React.Component {
   }
 
   handleConfirmClick(e) {
-    // alert(JSON.stringify(this.state));
     if (this.props.onProfileConfirm) {
       this.props.onProfileConfirm(this.state);
     }
