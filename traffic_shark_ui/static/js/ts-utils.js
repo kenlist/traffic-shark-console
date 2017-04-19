@@ -8,48 +8,60 @@ function capitalizeFirstLetter(s) {
  * You can either give it a string of keys separated by a underscore (_)
  * or a list of keys
  */
-var RecursiveLinkStateMixin = {
-  linkState: function (path) {
-    function setPath (obj, path, value) {
-      var leaf = resolvePath(obj, path);
-      leaf.obj[leaf.key] = value;
-    }
-
-    function getPath (obj, path) {
-      var leaf = resolvePath(obj, path);
-      return leaf.obj[leaf.key];
-    }
-
-    function resolvePath (obj, keys) {
-      if (typeof keys === 'string') {
-        keys = keys.split('-');
+var RecursiveLinkStateMixin = function (klass) {
+  var LinkStateObject = {
+    linkState(path) {
+      function setPath(obj, path, value) {
+        var leaf = resolvePath(obj, path);
+        leaf.obj[leaf.key] = value;
       }
-      var lastIndex = keys.length - 1;
-      var current = obj;
-      for (var i = 0; i < lastIndex; i++) {
-        var key = keys[i];
-        current = current[key];
+
+      function getPath(obj, path) {
+        var leaf = resolvePath(obj, path);
+        return leaf.obj[leaf.key];
       }
+
+      function resolvePath(obj, keys) {
+        if (typeof keys === 'string') {
+          keys = keys.split('-');
+        }
+        var lastIndex = keys.length - 1;
+        var current = obj;
+        for (var i = 0; i < lastIndex; i++) {
+          var key = keys[i];
+          current = current[key];
+        }
+        return {
+          obj: current,
+          key: keys[lastIndex]
+        };
+      }
+
       return {
-        obj: current,
-        key: keys[lastIndex]
+        value: getPath(this.state, path),
+        requestChange: function(newValue) {
+          setPath(this.state, path, newValue);
+          this.forceUpdate();
+        }.bind(this)
       };
     }
-
-    return {
-      value: getPath(this.state, path),
-      requestChange: function(newValue) {
-        setPath(this.state, path, newValue);
-        this.forceUpdate();
-      }.bind(this)
-    };
   }
+
+  return mixins({
+    linkState: mixins.ONCE,
+  })(klass.prototype, LinkStateObject);
 };
 
-var IdentifyableObject = {
-  getIdentifier: function () {
-    return this.props.params.join('-');
-  },
+var IdentifyMixin = function(klass) {
+  var IdentifyableObject = {
+    getIdentifier() {
+      return this.props.params.join('-');
+    }
+  };
+
+  return mixins({
+    getIdentifier: mixins.ONCE,
+  })(klass.prototype, IdentifyableObject);
 };
 
 
@@ -73,8 +85,8 @@ function objectEquals(x, y) {
   }
 
   if (typeof(x) === 'object' && x !== null) {
-    x_keys = Object.keys(x);
-    y_keys = Object.keys(y);
+    var x_keys = Object.keys(x);
+    var y_keys = Object.keys(y);
     if (x_keys.sort().toString() !== y_keys.sort().toString()) {
       console.error('Object do not have the same keys: ' +
         x_keys.sort().toString() + ' vs ' +
@@ -82,7 +94,7 @@ function objectEquals(x, y) {
       );
       return false;
     }
-    equals = true;
+    var equals = true;
     x_keys.forEach(function (key, index) {
         equals &= objectEquals(x[key], y[key]);
     });
@@ -99,3 +111,15 @@ function objectEquals(x, y) {
     //   }, 100);
     //   window.test_notify = true;
     // }
+
+// for modal box
+function showPanel() {
+  $('#modalOverlay').show();
+  $('#modalContainer').show();
+}
+
+function hidePanel() {
+  $('#modalOverlay').hide();
+  $('#modalContainer').hide();
+  ReactDOM.unmountComponentAtNode(document.getElementById('modalContainer'));
+}

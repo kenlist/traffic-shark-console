@@ -1,6 +1,6 @@
-var ProfileNameSetting = React.createClass({
-  render: function() {
-    link_state = this.props.link_state("name");
+class ProfileNameSetting extends React.Component {
+  render() {
+    var link_state = this.props.link_state("name");
     var input = null
     if (this.props.editable) {
       input = <input id="inputProfileName" type="text" className="form-control" placeholder="Please Input Your Profile Name" valueLink={link_state} />
@@ -19,13 +19,16 @@ var ProfileNameSetting = React.createClass({
         </div>
     );
   }
-});
+}
 
-var LinkShapingNumberSetting = React.createClass({
-  mixins: [IdentifyableObject],
-  render: function() {
-    id = this.getIdentifier();
-    link_state = this.props.link_state("tc_setting-" + id);
+class LinkShapingNumberSetting extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    var id = this.getIdentifier();
+    var link_state = this.props.link_state("tc_setting-" + id);
     return (
       <div className="form-group">
         <label htmlFor={id} className="col-sm-3 control-label">{this.props.text}</label>
@@ -35,10 +38,11 @@ var LinkShapingNumberSetting = React.createClass({
       </div>
     );
   }
-});
+}
+IdentifyMixin(LinkShapingNumberSetting);
 
-var CollapseableInputList = React.createClass({
-  render: function() {
+class CollapseableInputList extends React.Component {
+  render() {
     return (
       <fieldset className="accordion-group">
         <legend>{this.props.text}</legend>
@@ -46,25 +50,25 @@ var CollapseableInputList = React.createClass({
       </fieldset>
     );
   }
-});
+}
 
-var CollapseableInputGroup = React.createClass({
-  mixins: [IdentifyableObject],
-  getInitialState: function () {
-    return {collapsed: true};
-  },
+class CollapseableInputGroup extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {collapsed: true};
+  }
 
-  handleClick: function (e) {
+  handleClick(e) {
     this.setState({collapsed: !this.state.collapsed})
-  },
+  }
 
-  render: function () {
-    id = this.getIdentifier();
+  render() {
+    var id = this.getIdentifier.bind(this)();
     var text = this.state.collapsed ? 'Show more' : 'Show less';
     return (
       <div>
         <div className="accordion-heading">
-          <a className="accordion-toggle" data-toggle="collapse" data-target={"#" + id} href="#" onClick={this.handleClick}>{text}</a>
+          <a className="accordion-toggle" data-toggle="collapse" data-target={"#" + id} href="#" onClick={this.handleClick.bind(this)}>{text}</a>
         </div>
         <div className="accordion-body collapse" id={id}>
           <div className="accordion-inner">
@@ -74,11 +78,12 @@ var CollapseableInputGroup = React.createClass({
       </div>
     );
   }
-});
+}
+IdentifyMixin(CollapseableInputGroup);
 
-var LinkShapingSettings = React.createClass({
-  render: function() {
-    d = this.props.direction;
+class LinkShapingSettings extends React.Component {
+  render() {
+    var d = this.props.direction;
     return (
       <div>
         <h4>{capitalizeFirstLetter(d) + "link"}:</h4>
@@ -118,38 +123,38 @@ var LinkShapingSettings = React.createClass({
       </div>
     );
   }
-});
+}
 
-var ProfileSettingPanel = React.createClass({
-  mixins: [RecursiveLinkStateMixin],
-  getInitialState: function() {
-    return {
+class ProfileSettingPanel extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
       name: this.props.name,
       tc_setting: this.props.tc_setting ? this.props.tc_setting : new TSSettings().getDefaultSettings()
     };
-  },
+  }
 
-  handleConfirmClick: function(e) {
+  handleConfirmClick(e) {
     // alert(JSON.stringify(this.state));
     if (this.props.onProfileConfirm) {
       this.props.onProfileConfirm(this.state);
     }
     hidePanel();
-  },
+  }
 
-  handleCancelClick: function(e) {
+  handleCancelClick(e) {
     hidePanel();
-  },
+  }
 
-  render: function() {
-    link_state = this.linkState;
+  render() {
+    var link_state = this.linkState.bind(this);
 
     return (
       <div>
-          <button id="confirmButton" type="button" className="btn btn-success pull-right" onClick={this.handleConfirmClick}>
+          <button id="rightButton" type="button" className="btn btn-success pull-right" onClick={this.handleConfirmClick.bind(this)}>
             Confirm
           </button>        
-          <button id="cancelButton" type="button" className="btn btn-danger pull-right" onClick={this.handleCancelClick}>
+          <button id="leftButton" type="button" className="btn btn-danger pull-right" onClick={this.handleCancelClick.bind(this)}>
             Cancel
           </button>
       
@@ -171,15 +176,5 @@ var ProfileSettingPanel = React.createClass({
       </div>
     );
   }
-});
-
-function showPanel() {
-  $('#modalOverlay').show();
-  $('#modalContainer').show();
 }
-
-function hidePanel() {
-  $('#modalOverlay').hide();
-  $('#modalContainer').hide();
-  React.unmountComponentAtNode(document.getElementById('modalContainer'));
-}
+RecursiveLinkStateMixin(ProfileSettingPanel)

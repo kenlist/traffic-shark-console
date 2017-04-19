@@ -1,5 +1,5 @@
-var ProfilePanel = React.createClass({
-  onNewProfile: function(profile) {
+class ProfilePanel extends React.Component {
+  onNewProfile(profile) {
     if (!profile.name) {
       this.props.notify("error", "New Profile failed: You must input a profile name!");
       return;
@@ -13,30 +13,30 @@ var ProfilePanel = React.createClass({
     if (this.props.onProfileUpdate) {
       this.props.onProfileUpdate(profile);
     }
-  },
+  }
 
-  handleNewClick: function(e) {
+  handleNewClick(e) {
     if (e.type == "click") {
-      React.render(
+      ReactDOM.render(
       <div className="mb-content">
-        <ProfileSettingPanel notify={this.props.notify} onProfileConfirm={this.onNewProfile} />
+        <ProfileSettingPanel notify={this.props.notify} onProfileConfirm={this.onNewProfile.bind(this)} />
       </div>, document.getElementById('modalContainer'));
       showPanel();
     }
-  },
+  }
 
-  handleEditClick: function(profile_name, e) {
+  handleEditClick(profile_name, e) {
     if (e.type == "click") {
-      tc_setting = this.props.profiles[profile_name];
-      React.render(
+      var tc_setting = this.props.profiles[profile_name];
+      ReactDOM.render(
       <div className="mb-content">
-        <ProfileSettingPanel name={profile_name} tc_setting={tc_setting} onProfileConfirm={this.props.onProfileUpdate} />
+        <ProfileSettingPanel name={profile_name} tc_setting={tc_setting} onProfileConfirm={this.props.onProfileUpdate.bind(this)} />
       </div>, document.getElementById('modalContainer'));
       showPanel();
     }
-  },
+  }
 
-  handleRemoveClick: function(profile_name, e) {
+  handleRemoveClick(profile_name, e) {
     if (e.type == "click") {
       if (confirm('Do you really want to remove profile:[' + profile_name + ']?')) {
         if (this.props.onProfileUpdate) {
@@ -46,9 +46,9 @@ var ProfilePanel = React.createClass({
         }
       }
     }
-  },
+  }
 
-  render: function() {
+  render() {
     function renderProperty(obj, keys, unit) {
       if (typeof keys === 'string') {
         keys = keys.split('-');
@@ -85,7 +85,7 @@ var ProfilePanel = React.createClass({
     if (Object.keys(this.props.profiles).length > 0) {
       profile_list = [];
       var count = 1;
-      for (name in this.props.profiles) {
+      for (var name in this.props.profiles) {
         profile_list.push(
           <tr>
             <td>{count++}</td>
@@ -108,16 +108,16 @@ var ProfilePanel = React.createClass({
     }
 
     return (
-      <div className="panel-group" id="accordion3" role="tablist" aria-multiselectable="false">
+      <div className="panel-group" id="accordion-profile" role="tablist" aria-multiselectable="false">
         <div className="panel panel-default">
-          <div className="panel-heading" data-toggle="collapse" data-parent="#accordion3" href="#collapseProfile" aria-expanded="true" aria-controls="collapseProfile">
+          <div className="panel-heading" data-toggle="collapse" data-parent="#accordion-profile" href="#collapseProfile" aria-expanded="true" aria-controls="collapseProfile">
               <h4 className="panel-title">
                   Network Profiles
               </h4>
           </div>
           <div id="collapseProfile" className="panel-collapse collapse in" role="tabpanel">
             <div className="panel-body">
-              <button type="button" id="new_profile_button" className="btn btn-success pull-right" onClick={this.handleNewClick}>
+              <button type="button" id="new_profile_button" className="btn btn-success pull-right" onClick={this.handleNewClick.bind(this)}>
                 New Profile
               </button>
               <table className="table table-striped">
@@ -139,4 +139,4 @@ var ProfilePanel = React.createClass({
       </div>
     );
   }
-});
+}

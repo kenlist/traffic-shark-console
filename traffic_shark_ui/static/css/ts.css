@@ -30,6 +30,6 @@ We're not using anchors, so make sure users know they can click on panel headers
   background-color: gray;
 }
 
-#collapseMachineSettings button.update {
+#collapseMachineSettings button.rightbtn {
   margin-left:10px;
 }

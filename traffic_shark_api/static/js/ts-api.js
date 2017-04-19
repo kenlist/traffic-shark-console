@@ -20,14 +20,15 @@ function TSRestClient(endpoint) {
       contentType: 'application/json; charset=utf-8',
       complete: function(xhr, status) {
         var rc = {
-          status: xhr.status,
+          status: (xhr.status ? xhr.status : status),
           json: xhr.responseJSON,
         };
 
         if (callback != undefined) {
           callback(rc);
         }
-      }
+      },
+      timeout: 10000
     });
   };
 }

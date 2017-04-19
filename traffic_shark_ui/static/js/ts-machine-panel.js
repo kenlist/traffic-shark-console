@@ -1,28 +1,28 @@
-var RefreshButton = React.createClass({
-  render: function() {
-    button_values = [
+class RefreshButton extends React.Component {
+  render() {
+    var button_values = [
       {
         message: "Refresh",
-        css: "warning",
+        css: "warning"
       },
       {
         message: "Refresh",
-        css: "success",
-      },
+        css: "success"
+      }
     ];
 
     // content = button_values[this.props.status];
-    content = button_values[1];
+    var content = button_values[1];
     return (
       <button type="button" id={this.props.id} className={"btn btn-" + content.css + " pull-right"} onClick={this.props.onClick}>
         {content.message}
       </button>
     )
   }
-});
+}
 
-var ControlButton = React.createClass({
-  render: function() {
+class ControlButton extends React.Component {
+  render() {
     var btn = null;
     if (this.props.is_shaping) {
       btn = <button type="button" className="btn btn-warning btn-sm" disabled={this.props.disabled} onClick={this.props.onUnshapeClick}>Turn Off</button>
@@ -31,22 +31,28 @@ var ControlButton = React.createClass({
     }
     return btn;
   }
-});
+}
 
-var UpdateButton = React.createClass({
-  render: function() {
-    return <button type="button" className="btn btn-default btn-sm update" disabled={this.props.disabled} onClick={this.props.onClick}>Update</button>
+class UpdateButton extends React.Component {
+  render() {
+    return <button type="button" className="btn btn-default btn-sm rightbtn" disabled={this.props.disabled} onClick={this.props.onClick}>Update</button>
   }
-});
+}
 
-var ProfileSelector = React.createClass({
-  onSelectChange: function(e) {
+class CaptureButton extends React.Component {
+  render() {
+    return <button type="button" className="btn btn-default btn-sm rightbtn" onClick={this.props.onClick}>Capture</button>
+  }
+}
+
+class ProfileSelector extends React.Component {
+  onSelectChange(e) {
     if (this.props.onProfileChange) {
       this.props.onProfileChange(this.props.mac, e.target.value);
     }
-  },
+  }
 
-  render: function() {
+  render() {
     function renderOption(name, selected) {
       if (selected) {
         return <option selected>{name}</option>
@@ -55,33 +61,33 @@ var ProfileSelector = React.createClass({
       }
     }
 
-    options = [];
-    for (name in this.props.profiles) {
+    var options = [];
+    for (var name in this.props.profiles) {
       options.push(renderOption(name, this.props.current_name == name));
     }
 
     return (
-      <select className="form-control" onChange={this.onSelectChange} disabled={this.props.disabled}>
+      <select className="form-control" onChange={this.onSelectChange.bind(this)} disabled={this.props.disabled}>
         <option disabled selected value> -- select a profile -- </option>
         {options}
       </select>
     )
   }
-});
+}
 
-var MachineSettingPanel = React.createClass({
-  handleRefreshClick: function(e) {
+class MachineSettingPanel extends React.Component {
+  handleRefreshClick(e) {
     if (e.type = 'click') {
       if (this.props.onMCRefresh) {
         this.props.onMCRefresh(true);
       }
     }
-  },
+  }
 
-  checkAndUpdateMC: function(mac, next_step) {
-    mc = this.props.mcontrols[mac];
+  checkAndUpdateMC(mac, next_step) {
+    var mc = this.props.mcontrols[mac];
     if (mc['new_profile_name'] && mc['profile_name'] != mc['new_profile_name']) {
-      update_mc = {
+      var update_mc = {
         mac: mac,
         state: {
           ip: mc['ip'],
@@ -95,7 +101,9 @@ var MachineSettingPanel = React.createClass({
 
           this.props.notify('success', 'Update Success!');
           this.forceUpdate();
-          next_step();
+          if (next_step) {
+            next_step();
+          }
         } else {
           this.props.error('Update MachineControl Failed: ', result);
         }
@@ -103,16 +111,16 @@ var MachineSettingPanel = React.createClass({
     } else if (next_step) {
       next_step();
     }
-  },
+  }
 
-  handleUpdateClick: function(mac, e) {
-    if (e.type = 'click') {
+  handleUpdateClick(mac, e) {
+    if (e.type == 'click') {
       this.checkAndUpdateMC(mac);
     }
-  },
+  }
 
-  handleShapeClick: function(mac, e) {
-    if (e.type = 'click') {
+  handleShapeClick(mac, e) {
+    if (e.type == 'click') {
       // check profile
       this.checkAndUpdateMC(mac, function() {
         this.props.client.shapeMachine(function(result) {
@@ -128,10 +136,10 @@ var MachineSettingPanel = React.createClass({
 
       }.bind(this));
     }
-  },
+  }
 
-  handleUnshapeClick: function(mac, e) {
-    if (e.type = 'click') {
+  handleUnshapeClick(mac, e) {
+    if (e.type == 'click') {
       this.props.client.unshapeMachine(function(result) {
         if (result.status >= 200 && result.status < 300) {
           this.props.mcontrols[mac]['is_shaping'] = false;
@@ -143,20 +151,30 @@ var MachineSettingPanel = React.createClass({
         }
       }.bind(this), mac);
     }
-  },
+  }
 
-  onProfileChange: function(mac, new_profile_name) {
-    mc = this.props.mcontrols[mac];
+  handleCaptureClick(mac, ip, e) {
+    if (e.type == 'click') {
+      // React.render(
+      //   <div className="mb-content">
+      //     <CapturePanel notify={this.props.notify} onProfileConfirm={null} mac={mac} ip={ip} />
+      //   </div>, document.getElementById('modalContainer'));
+      // showPanel();
+    }
+  }
+
+  onProfileChange(mac, new_profile_name) {
+    var mc = this.props.mcontrols[mac];
     mc["new_profile_name"] = new_profile_name;
     this.forceUpdate();
-  },
+  }
 
   // <RefreshButton id="refresh_button" onClick={this.handleRefreshClick} />
-  render: function() {
+  render() {
     function getSortedMCList(mcontrols) {
       var mc_list = [];
-      for (mac in mcontrols) {
-        mc = mcontrols[mac];
+      for (var mac in mcontrols) {
+        var mc = mcontrols[mac];
         mc['mac'] = mac;
         mc_list.push(mc);
       }
@@ -176,11 +194,11 @@ var MachineSettingPanel = React.createClass({
     var mc_list = getSortedMCList(this.props.mcontrols);
     if (mc_list.length > 0) {
       mc_render_list = [];
-      for (i in mc_list) {
-        mc = mc_list[i];
-        mac = mc['mac'];
-        is_control_disabled = !mc["online"];
-        is_update_disabled = !mc["new_profile_name"] || mc["new_profile_name"] == mc["profile_name"];
+      for (var i in mc_list) {
+        var mc = mc_list[i];
+        var mac = mc['mac'];
+        var is_control_disabled = !mc["online"];
+        var is_update_disabled = !mc["new_profile_name"] || mc["new_profile_name"] == mc["profile_name"];
         mc_render_list.push(
           <tr>
             <td>{Number(i) + 1}</td>
@@ -189,11 +207,12 @@ var MachineSettingPanel = React.createClass({
               <div><code>{mc["online"] ? mc["ip"] : "offline"}</code></div>
             </td>
             <td>
-              <ProfileSelector profiles={this.props.profiles} current_name={mc["profile_name"]} onProfileChange={this.onProfileChange} mac={mac} disabled={is_control_disabled}/>
+              <ProfileSelector profiles={this.props.profiles} current_name={mc["profile_name"]} onProfileChange={this.onProfileChange.bind(this)} mac={mac} disabled={is_control_disabled}/>
             </td>
             <td>
               <ControlButton is_shaping={mc["is_shaping"]} onShapeClick={this.handleShapeClick.bind(this, mac)} onUnshapeClick={this.handleUnshapeClick.bind(this, mac)} disabled={is_control_disabled}/>
               <UpdateButton disabled={is_update_disabled} onClick={this.handleUpdateClick.bind(this, mac)} />
+              <CaptureButton onClick={this.handleCaptureClick.bind(this, mac, mc["ip"])} />
             </td>
           </tr>
         );
@@ -229,4 +248,4 @@ var MachineSettingPanel = React.createClass({
       </div>
     );
   }
-});
+}

@@ -14,8 +14,8 @@ var NOTIFICATION_TYPES = {
   "success": "success",
 };
 
-var NotificationPanel = React.createClass({
-  render: function() {
+class NotificationPanel extends React.Component {
+  render() {
     var notifyNodes = this.props.notifications.map(function(item, idx, arr) {
       var timeout = Math.floor((item.expire_at - new Date().getTime()) / 1000)
       var cls = "alert alert-" + (NOTIFICATION_TYPES[item.type] || item.type);
@@ -28,6 +28,7 @@ var NotificationPanel = React.createClass({
         </div>
       );
     });
+
     if (notifyNodes.length == 0) {
       notifyNodes = (
         <i>No notifications.</i>
@@ -50,18 +51,18 @@ var NotificationPanel = React.createClass({
       </div>
     );
   }
-});
+};
 
-var TrafficSharkUI = React.createClass({
-  mixins: [RecursiveLinkStateMixin], 
-  getInitialState: function() {
-    test_setting = new TSSettings().getDefaultSettings();
-    test_setting["up"]["rate"] = 100;
-    test_setting["up"]["delay"]["delay"] = 5;
-    test_setting["down"]["rate"] = 150;
-    test_setting["down"]["delay"]["delay"] = 5;
+class TrafficSharkUI extends React.Component {
+  constructor(props) {
+    super(props)
+    // test_setting = new TSSettings().getDefaultSettings();
+    // test_setting["up"]["rate"] = 100;
+    // test_setting["up"]["delay"]["delay"] = 5;
+    // test_setting["down"]["rate"] = 150;
+    // test_setting["down"]["delay"]["delay"] = 5;
 
-    return {
+    this.state = {
       client: new TSRestClient(this.props.endpoint),
       profiles: {
         // "test": test_setting
@@ -71,60 +72,60 @@ var TrafficSharkUI = React.createClass({
       notifications: [],
       current_profile: null,
     };
-  },
+  }
 
-  notify: function(type, msg) {
-    this.setState(function(state, props) {
+  notify(type, msg) {
+    this.setState((prevState, props) => {
       return {
-        notifications: state.notifications.concat({
+        notifications: prevState.notifications.concat({
           expire_at: ERROR_EXPIRY + new Date().getTime(),
           message: msg,
           type: type,
         })
       };
     });
-  },
+  }
 
-  error: function(prefix, result) {
+  error(prefix, result) {
     if (result.json && result.json.detail) {
-        this.notify('error', prefix + JSON.stringify(result.json.detail));
-      } else {
-        this.notify('error', prefix + '{status:' + result.status + '}');
-      }
-  },
+      this.notify('error', prefix + JSON.stringify(result.json.detail));
+    } else {
+      this.notify('error', prefix + '{status:' + result.status + '}');
+    }
+  }
 
-  expireNotifications: function() {
-    this.setState(function(state, props) {
+  expireNotifications() {
+    this.setState((prevState, props) => {
       return {
-        notifications: state.notifications.filter(function(item, idx, arr) {
+        notifications: prevState.notifications.filter(function(item, idx, arr) {
           return item.expire_at >= new Date().getTime();
         })
-      }
+      };
     });
-  },
+  }
 
-  componentDidMount: function() {
-    this.expiry_interval = setInterval(this.expireNotifications, 1000);
+  componentDidMount() {
+    this.expiry_interval = setInterval(this.expireNotifications.bind(this), 1000);
     this.state.client.getProfiles(function(result) {
       if (result.status >= 200 && result.status < 300) {
         this.setState({
           profiles:result.json
         });
       } else {
-        this.error('Error: ', result);
+        this.error('GetProfiles Error: ', result);
       }
     }.bind(this));
 
     this.onMCRefresh();
-  },
+  }
 
-  componentWillUnmount: function() {
+  componentWillUnmount() {
     if (this.expiry_interval != null) {
       clearInterval(this.expiry_interval);
     }
-  },
+  }
 
-  onProfileUpdate: function(profile) {
+  onProfileUpdate(profile) {
     //todo: update profiles if there is changed(add or update or remove)
     if (!profile.tc_setting) {
       //remove
@@ -150,12 +151,11 @@ var TrafficSharkUI = React.createClass({
         this.error('Profile Update Error: ', result);
       }
     }.bind(this), profile);
-  },
+  }
 
-  onMCRefresh: function(need_notify) {
+  onMCRefresh(need_notify) {
     this.state.client.getMachineControls(function(result) {
       if (result.status >= 200 && result.status < 300) {
-        // alert(JSON.stringify(result))
         this.setState({
           mcontrols:result.json
         });
@@ -164,19 +164,20 @@ var TrafficSharkUI = React.createClass({
         }
         this.forceUpdate();
       } else {
-        this.error('Error: ', result);
+        this.error('Refresh Machine Controls Error: ', result);
       }
     }.bind(this));
-  },
+  }
 
-  render: function() {
-    link_state = this.linkState;
+  render() {
     return (
       <div>
         <NotificationPanel notifications={this.state.notifications} />
-        <MachineSettingPanel mcontrols={this.state.mcontrols} notify={this.notify} onMCRefresh={this.onMCRefresh} profiles={this.state.profiles} client={this.state.client} error={this.error} />
-        <ProfilePanel link_state={this.props.link_state} notify={this.notify} profiles={this.state.profiles} onProfileUpdate={this.onProfileUpdate} />
+        <MachineSettingPanel mcontrols={this.state.mcontrols} notify={this.notify.bind(this)} onMCRefresh={this.onMCRefresh.bind(this)} profiles={this.state.profiles} client={this.state.client} error={this.error.bind(this)} />
+        <ProfilePanel notify={this.notify.bind(this)} profiles={this.state.profiles} onProfileUpdate={this.onProfileUpdate.bind(this)} />
       </div>
     )
   }
-});
+}
+
+
