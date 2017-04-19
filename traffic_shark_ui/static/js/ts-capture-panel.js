@@ -1,3 +1,15 @@
+class CaptureControlButton extends React.Component {
+  render() {
+    var btn = null;
+    if (this.props.is_capturing) {
+      btn = <button type="button" className="btn btn-warning pull-right right-button" onClick={this.props.onStopClick}>Stop Capture</button>
+    } else {
+      btn = <button type="button" className="btn btn-primary pull-right right-button" onClick={this.props.onStartClick}>Start Capture</button>
+    }
+    return btn;
+  }
+}
+
 class TabControl extends React.Component {
   render() {
     return (
@@ -28,6 +40,32 @@ class TabControl extends React.Component {
 }
 
 class CapturePanel extends React.Component {
+  handleStartCaptureClick(mac, e) {
+    this.props.client.startCapture(function(result) {
+      if (result.status >= 200 && result.status < 300) {
+        this.props.mcontrol['is_capturing'] = true;
+
+        this.props.notify('success', 'Start Capture Success: ' + mac);
+        this.forceUpdate();
+      } else {
+        this.props.error('Start Capture Failed: ', result);
+      }
+    }.bind(this), mac);
+  }
+
+  handleStopCaptureClick(mac, e) {
+    this.props.client.stopCapture(function(result) {
+      if (result.status >= 200 && result.status < 300) {
+        this.props.mcontrol['is_capturing'] = false;
+
+        this.props.notify('success', 'Stop Capture Success: ' + mac);
+        this.forceUpdate();
+      } else {
+        this.props.error('Stop Capture Failed: ', result);
+      }
+    }.bind(this), mac);
+  }
+
   handleCancelClick(e) {
     hidePanel();
   }
@@ -35,10 +73,8 @@ class CapturePanel extends React.Component {
   render() {
     return(
       <div>
-        <button id="rightButton" type="button" className="btn btn-primary pull-right" onClick={this.handleCancelClick.bind(this)}>
-          Start
-        </button>
-        <button id="leftButton" type="button" className="btn btn-danger pull-right" onClick={this.handleCancelClick.bind(this)}>
+        <CaptureControlButton is_capturing={this.props.mcontrol['is_capturing']} onStartClick={this.handleStartCaptureClick.bind(this, this.props.mac)} onStopClick={this.handleStopCaptureClick.bind(this, this.props.mac)} />
+        <button type="button" className="btn btn-danger pull-right left-button" onClick={this.handleCancelClick.bind(this)}>
           Cancel
         </button>
       

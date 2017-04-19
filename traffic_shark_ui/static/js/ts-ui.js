@@ -147,6 +147,7 @@ class TrafficSharkUI extends React.Component {
   onMCRefresh(need_notify) {
     this.state.client.getMachineControls(function(result) {
       if (result.status >= 200 && result.status < 300) {
+        // console.log(result.json);
         this.setState({
           mcontrols:result.json
         });

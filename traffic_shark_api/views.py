@@ -33,6 +33,7 @@ def serviced(method):
 class MachineControlApi(APIView):
     @serviced
     def get(self, request, service):
+        print 'MachineControlApi get'
         try:
             mcontrols = service.getMachineControls()
         except TrafficControlException as e:
@@ -52,6 +53,7 @@ class MachineControlApi(APIView):
 
     @serviced
     def patch(self, request, service):
+        print 'MachineControlApi patch: {}'.format(request.data)
         mc_serializer = MachineControlSerializer(data=request.data)
 
         if (not mc_serializer.is_valid()):
@@ -76,7 +78,7 @@ class MachineControlApi(APIView):
     @serviced
     def post(self, request, service):
         mac = request.data
-        print 'post: {}'.format(mac)
+        print 'MachineControlApi post: {}'.format(mac)
 
         if mac is None:
             return Response(
@@ -93,12 +95,12 @@ class MachineControlApi(APIView):
 
         return Response(
             '', 
-            status=status.HTTP_200_OK)
+            status=status.HTTP_201_CREATED)
 
     @serviced
     def delete(self, request, service):
         mac = request.data
-        print 'delete: {}'.format(mac)
+        print 'MachineControlApi delete: {}'.format(mac)
 
         if mac is None:
             return Response(
@@ -121,6 +123,7 @@ class ProfileApi(APIView) :
 
     @serviced
     def get(self, request, service):
+        print 'ProfileApi get'
         try:
             profiles = service.getProfiles()
         except TrafficControlException as e:
@@ -140,6 +143,7 @@ class ProfileApi(APIView) :
         
     @serviced
     def post(self, request, service):
+        print 'ProfileApi post: {}'.format(request.data)
         profile_serializer = ProfileSerializer(data=request.data)
 
         if (not profile_serializer.is_valid()):
@@ -159,3 +163,57 @@ class ProfileApi(APIView) :
             '', 
             status=status.HTTP_201_CREATED
         )
+
+class CaptureApi(APIView) :
+
+    @serviced
+    def get(self, request, service):
+        return Response(
+            None, 
+            status=status.HTTP_200_OK)
+        
+    @serviced
+    def post(self, request, service):
+        mac = request.data
+        print 'CaptureApi post: {}'.format(mac)
+
+        if mac is None:
+            return Response(
+                {'details': 'invalid mac address'},
+                status=status.HTTP_401_UNAUTHORIZED)
+
+        try:
+            tcrc = service.startCapture(mac)
+        except TrafficControlException as e:
+            return Response(e.message, status=status.HTTP_401_UNAUTHORIZED)
+        result = {'result': tcrc.code, 'message': tcrc.message}
+        if tcrc.code:
+            raise ParseError(detail=repr(result))
+
+        return Response(
+            '', 
+            status=status.HTTP_200_OK)
+
+    @serviced
+    def delete(self, request, service):
+        mac = request.data
+        print 'CaptureApi delete: {}'.format(mac)
+
+        if mac is None:
+            return Response(
+                {'details': 'invalid mac address'},
+                status=status.HTTP_401_UNAUTHORIZED)
+
+        try:
+            tcrc = service.stopCapture(mac)
+        except TrafficControlException as e:
+            return Response(e.message, status=status.HTTP_401_UNAUTHORIZED)
+        result = {'result': tcrc.code, 'message': tcrc.message}
+        if tcrc.code:
+            raise ParseError(detail=repr(result))
+
+        return Response(
+            '', 
+            status=status.HTTP_200_OK)
+
+

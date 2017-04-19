@@ -16,24 +16,20 @@ class ProfilePanel extends React.Component {
   }
 
   handleNewClick(e) {
-    if (e.type == "click") {
-      ReactDOM.render(
-      <div className="mb-content">
-        <ProfileSettingPanel notify={this.props.notify} onProfileConfirm={this.onNewProfile.bind(this)} />
-      </div>, document.getElementById('modalContainer'));
-      showPanel();
-    }
+    ReactDOM.render(
+    <div className="mb-content">
+      <ProfileSettingPanel notify={this.props.notify} onProfileConfirm={this.onNewProfile.bind(this)} />
+    </div>, document.getElementById('modalContainer'));
+    showPanel();
   }
 
   handleEditClick(profile_name, e) {
-    if (e.type == "click") {
-      var tc_setting = this.props.profiles[profile_name];
-      ReactDOM.render(
-      <div className="mb-content">
-        <ProfileSettingPanel name={profile_name} tc_setting={tc_setting} onProfileConfirm={this.props.onProfileUpdate} />
-      </div>, document.getElementById('modalContainer'));
-      showPanel();
-    }
+    var tc_setting = this.props.profiles[profile_name];
+    ReactDOM.render(
+    <div className="mb-content">
+      <ProfileSettingPanel name={profile_name} tc_setting={tc_setting} onProfileConfirm={this.props.onProfileUpdate} />
+    </div>, document.getElementById('modalContainer'));
+    showPanel();
   }
 
   handleRemoveClick(profile_name, e) {

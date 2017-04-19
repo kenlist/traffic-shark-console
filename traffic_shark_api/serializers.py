@@ -135,6 +135,7 @@ class MachineControlStateSerializer(ThriftSerializer):
         max_length=128, allow_blank=True, allow_null=False, required=True)
     profile_name = serializers.CharField(
         max_length=128, allow_blank=False, allow_null=False, required=True)
+    is_capturing = serializers.BooleanField(default=False)
     is_shaping = serializers.BooleanField(default=False)
     online = serializers.BooleanField(default=False)
     last_update_time = serializers.IntegerField(default=0)

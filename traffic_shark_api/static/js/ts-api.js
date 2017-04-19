@@ -61,6 +61,14 @@ TSRestClient.prototype.unshapeMachine = function(callback, mac) {
   this.api_call('DELETE', 'mc', callback, mac);
 }
 
+TSRestClient.prototype.startCapture = function(callback, mac) {
+  this.api_call('POST', 'capture', callback, mac);
+}
+
+TSRestClient.prototype.stopCapture = function(callback, mac) {
+  this.api_call('DELETE', 'capture', callback, mac);
+}
+
 function TSSettings() {
   this.defaults = {
     'up': {

@@ -30,6 +30,8 @@ if len(sys.argv) <= 1 or sys.argv[1] == '--help':
   print '   getProfiles()'
   print '  TrafficControlRc addProfile(Profile profile)'
   print '  TrafficControlRc removeProfile(string name)'
+  print '  TrafficControlRc startCapture(string mac)'
+  print '  TrafficControlRc stopCapture(string mac)'
   print ''
   sys.exit(0)
 
@@ -122,6 +124,18 @@ elif cmd == 'removeProfile':
     print 'removeProfile requires 1 args'
     sys.exit(1)
   pp.pprint(client.removeProfile(args[0],))
+
+elif cmd == 'startCapture':
+  if len(args) != 1:
+    print 'startCapture requires 1 args'
+    sys.exit(1)
+  pp.pprint(client.startCapture(args[0],))
+
+elif cmd == 'stopCapture':
+  if len(args) != 1:
+    print 'stopCapture requires 1 args'
+    sys.exit(1)
+  pp.pprint(client.stopCapture(args[0],))
 
 else:
   print 'Unrecognized method %s' % cmd

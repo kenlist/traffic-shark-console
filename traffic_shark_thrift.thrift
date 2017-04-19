@@ -1,8 +1,9 @@
 enum ReturnCode {
     OK = 0,
+    INVALID_ADDRESS,
     #INVALID_IP,
     #INVALID_TIMEOUT,
-    #ID_EXHAUST,
+    ID_EXHAUST,
     #NETLINK_ERROR,
     #UNKNOWN_ERROR,
     NETLINK_HTB_ERROR,
@@ -65,9 +66,10 @@ exception TrafficControlException {
 struct MachineControlState {
   1: string ip,
   2: string profile_name,
-  3: bool is_shaping,
-  4: bool online,
-  5: i64 last_update_time,
+  3: bool is_capturing,
+  4: bool is_shaping,
+  5: bool online,
+  6: i64 last_update_time,
 }
 
 struct MachineControl {
@@ -96,5 +98,11 @@ service TrafficSharkService {
   TrafficControlRc addProfile(1: Profile profile)
     throws (1: TrafficControlException failure),
   TrafficControlRc removeProfile(1: string name)
+    throws (1: TrafficControlException failure),
+
+  /* traffic capture api */
+  TrafficControlRc startCapture(1: string mac)
+    throws (1: TrafficControlException failure),
+  TrafficControlRc stopCapture(1: string mac)
     throws (1: TrafficControlException failure),
 }

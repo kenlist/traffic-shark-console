@@ -2,6 +2,11 @@
 import os
 import sys
 
+sys.path.insert(1, "packages")
+
+import django
+print django.__file__
+
 if __name__ == "__main__":
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "traffic_shark_ui.settings")
     try:

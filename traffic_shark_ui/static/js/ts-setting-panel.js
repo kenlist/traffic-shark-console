@@ -144,10 +144,10 @@ class ProfileSettingPanel extends React.Component {
 
     return (
       <div>
-          <button id="rightButton" type="button" className="btn btn-success pull-right" onClick={this.handleConfirmClick.bind(this)}>
+          <button type="button" className="btn btn-success pull-right right-button" onClick={this.handleConfirmClick.bind(this)}>
             Confirm
           </button>        
-          <button id="leftButton" type="button" className="btn btn-danger pull-right" onClick={this.handleCancelClick.bind(this)}>
+          <button type="button" className="btn btn-danger pull-right left-button" onClick={this.handleCancelClick.bind(this)}>
             Cancel
           </button>
       
