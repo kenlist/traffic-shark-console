@@ -53,10 +53,7 @@ class CollapseableInputList extends React.Component {
 }
 
 class CollapseableInputGroup extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {collapsed: true};
-  }
+  state = {collapsed: true}
 
   handleClick(e) {
     this.setState({collapsed: !this.state.collapsed})
@@ -126,12 +123,9 @@ class LinkShapingSettings extends React.Component {
 }
 
 class ProfileSettingPanel extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      name: this.props.name,
-      tc_setting: this.props.tc_setting ? this.props.tc_setting : new TSSettings().getDefaultSettings()
-    };
+  state = {
+    name: this.props.name,
+    tc_setting: this.props.tc_setting ? this.props.tc_setting : new TSSettings().getDefaultSettings()
   }
 
   handleConfirmClick(e) {

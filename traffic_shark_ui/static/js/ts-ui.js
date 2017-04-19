@@ -54,24 +54,15 @@ class NotificationPanel extends React.Component {
 };
 
 class TrafficSharkUI extends React.Component {
-  constructor(props) {
-    super(props)
-    // test_setting = new TSSettings().getDefaultSettings();
-    // test_setting["up"]["rate"] = 100;
-    // test_setting["up"]["delay"]["delay"] = 5;
-    // test_setting["down"]["rate"] = 150;
-    // test_setting["down"]["delay"]["delay"] = 5;
-
-    this.state = {
-      client: new TSRestClient(this.props.endpoint),
-      profiles: {
-        // "test": test_setting
-      },
-      mcontrols: {},
-      status: ts_status.OFFLINE,
-      notifications: [],
-      current_profile: null,
-    };
+  state = {
+    client: new TSRestClient(this.props.endpoint),
+    profiles: {
+      // "test": test_setting
+    },
+    mcontrols: {},
+    status: ts_status.OFFLINE,
+    notifications: [],
+    current_profile: null,
   }
 
   notify(type, msg) {

@@ -155,11 +155,11 @@ class MachineSettingPanel extends React.Component {
 
   handleCaptureClick(mac, ip, e) {
     if (e.type == 'click') {
-      // React.render(
-      //   <div className="mb-content">
-      //     <CapturePanel notify={this.props.notify} onProfileConfirm={null} mac={mac} ip={ip} />
-      //   </div>, document.getElementById('modalContainer'));
-      // showPanel();
+      ReactDOM.render(
+        <div className="mb-content">
+          <CapturePanel notify={this.props.notify} onProfileConfirm={null} mac={mac} ip={ip} />
+        </div>, document.getElementById('modalContainer'));
+      showPanel();
     }
   }
 

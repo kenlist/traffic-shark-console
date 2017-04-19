@@ -35,10 +35,10 @@ class CapturePanel extends React.Component {
   render() {
     return(
       <div>
-        <button id="rightButton" type="button" className="btn btn-primary pull-right" onClick={this.handleCancelClick}>
+        <button id="rightButton" type="button" className="btn btn-primary pull-right" onClick={this.handleCancelClick.bind(this)}>
           Start
         </button>
-        <button id="leftButton" type="button" className="btn btn-danger pull-right" onClick={this.handleCancelClick}>
+        <button id="leftButton" type="button" className="btn btn-danger pull-right" onClick={this.handleCancelClick.bind(this)}>
           Cancel
         </button>
       
