@@ -30,6 +30,7 @@ if len(sys.argv) <= 1 or sys.argv[1] == '--help':
   print '   getProfiles()'
   print '  TrafficControlRc addProfile(Profile profile)'
   print '  TrafficControlRc removeProfile(string name)'
+  print '  TrafficControlRc getCapturePackets(string mac)'
   print '  TrafficControlRc startCapture(string mac)'
   print '  TrafficControlRc stopCapture(string mac)'
   print ''
@@ -124,6 +125,12 @@ elif cmd == 'removeProfile':
     print 'removeProfile requires 1 args'
     sys.exit(1)
   pp.pprint(client.removeProfile(args[0],))
+
+elif cmd == 'getCapturePackets':
+  if len(args) != 1:
+    print 'getCapturePackets requires 1 args'
+    sys.exit(1)
+  pp.pprint(client.getCapturePackets(args[0],))
 
 elif cmd == 'startCapture':
   if len(args) != 1:

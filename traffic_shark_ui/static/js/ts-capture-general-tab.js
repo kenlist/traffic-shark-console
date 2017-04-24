@@ -1,332 +1,53 @@
-var data = [
-  {
-    "time": "9/1",
-    "price": 10,
-    "name": "商品A"
-  },
-  {
-    "time": "9/1",
-    "price": 30,
-    "name": "商品B"
-  },
-  {
-    "time": "9/2",
-    "price": 12,
-    "name": "商品A"
-  },
-  {
-    "time": "9/2",
-    "price": 32,
-    "name": "商品B"
-  },
-  {
-    "time": "9/3",
-    "price": 11,
-    "name": "商品A"
-  },
-  {
-    "time": "9/3",
-    "price": 35,
-    "name": "商品B"
-  },
-  {
-    "time": "9/4",
-    "price": 15,
-    "name": "商品A"
-  },
-  {
-    "time": "9/4",
-    "price": 40,
-    "name": "商品B"
-  },
-  {
-    "time": "9/5",
-    "price": 20,
-    "name": "商品A"
-  },
-  {
-    "time": "9/5",
-    "price": 42,
-    "name": "商品B"
-  },
-  {
-    "time": "9/6",
-    "price": 22,
-    "name": "商品A"
-  },
-  {
-    "time": "9/6",
-    "price": 35,
-    "name": "商品B"
-  },
-  {
-    "time": "9/7",
-    "price": 21,
-    "name": "商品A"
-  },
-  {
-    "time": "9/7",
-    "price": 36,
-    "name": "商品B"
-  },
-  {
-    "time": "9/8",
-    "price": 25,
-    "name": "商品A"
-  },
-  {
-    "time": "9/8",
-    "price": 31,
-    "name": "商品B"
-  },
-  {
-    "time": "9/9",
-    "price": 31,
-    "name": "商品A"
-  },
-  {
-    "time": "9/9",
-    "price": 35,
-    "name": "商品B"
-  },
-  {
-    "time": "9/10",
-    "price": 32,
-    "name": "商品A"
-  },
-  {
-    "time": "9/10",
-    "price": 36,
-    "name": "商品B"
-  },
-  {
-    "time": "9/11",
-    "price": 28,
-    "name": "商品A"
-  },
-  {
-    "time": "9/11",
-    "price": 40,
-    "name": "商品B"
-  },
-  {
-    "time": "9/12",
-    "price": 29,
-    "name": "商品A"
-  },
-  {
-    "time": "9/12",
-    "price": 42,
-    "name": "商品B"
-  },
-  {
-    "time": "9/13",
-    "price": 40,
-    "name": "商品A"
-  },
-  {
-    "time": "9/13",
-    "price": 40,
-    "name": "商品B"
-  },
-  {
-    "time": "9/14",
-    "price": 41,
-    "name": "商品A"
-  },
-  {
-    "time": "9/14",
-    "price": 38,
-    "name": "商品B"
-  },
-  {
-    "time": "9/15",
-    "price": 45,
-    "name": "商品A"
-  },
-  {
-    "time": "9/15",
-    "price": 40,
-    "name": "商品B"
-  },
-  {
-    "time": "9/16",
-    "price": 50,
-    "name": "商品A"
-  },
-  {
-    "time": "9/16",
-    "price": 40,
-    "name": "商品B"
-  },
-  {
-    "time": "9/17",
-    "price": 65,
-    "name": "商品A"
-  },
-  {
-    "time": "9/17",
-    "price": 38,
-    "name": "商品B"
-  },
-  {
-    "time": "9/18",
-    "price": 45,
-    "name": "商品A"
-  },
-  {
-    "time": "9/18",
-    "price": 36,
-    "name": "商品B"
-  },
-  {
-    "time": "9/19",
-    "price": 50,
-    "name": "商品A"
-  },
-  {
-    "time": "9/19",
-    "price": 30,
-    "name": "商品B"
-  },
-  {
-    "time": "9/20",
-    "price": 51,
-    "name": "商品A"
-  },
-  {
-    "time": "9/20",
-    "price": 29,
-    "name": "商品B"
-  },
-  {
-    "time": "9/21",
-    "price": 65,
-    "name": "商品A"
-  },
-  {
-    "time": "9/21",
-    "price": 28,
-    "name": "商品B"
-  },
-  {
-    "time": "9/22",
-    "price": 60,
-    "name": "商品A"
-  },
-  {
-    "time": "9/22",
-    "price": 25,
-    "name": "商品B"
-  },
-  {
-    "time": "9/23",
-    "price": 62,
-    "name": "商品A"
-  },
-  {
-    "time": "9/23",
-    "price": 28,
-    "name": "商品B"
-  },
-  {
-    "time": "9/24",
-    "price": 65,
-    "name": "商品A"
-  },
-  {
-    "time": "9/24",
-    "price": 29,
-    "name": "商品B"
-  },
-  {
-    "time": "9/25",
-    "price": 45,
-    "name": "商品A"
-  },
-  {
-    "time": "9/25",
-    "price": 30,
-    "name": "商品B"
-  },
-  {
-    "time": "9/26",
-    "price": 55,
-    "name": "商品A"
-  },
-  {
-    "time": "9/26",
-    "price": 40,
-    "name": "商品B"
-  },
-  {
-    "time": "9/27",
-    "price": 59,
-    "name": "商品A"
-  },
-  {
-    "time": "9/27",
-    "price": 32,
-    "name": "商品B"
-  },
-  {
-    "time": "9/28",
-    "price": 52,
-    "name": "商品A"
-  },
-  {
-    "time": "9/28",
-    "price": 33,
-    "name": "商品B"
-  },
-  {
-    "time": "9/29",
-    "price": 53,
-    "name": "商品A"
-  },
-  {
-    "time": "9/29",
-    "price": 34,
-    "name": "商品B"
-  },
-  {
-    "time": "9/30",
-    "price": 40,
-    "name": "商品A"
-  },
-  {
-    "time": "9/30",
-    "price": 30,
-    "name": "商品B"
-  },
-  {
-    "time": "9/31",
-    "price": 45,
-    "name": "商品A"
-  },
-  {
-    "time": "9/31",
-    "price": 35,
-    "name": "商品B"
-  }
-];
-
-class HigherChart extends React.Component {
+class TrafficChart extends React.Component {
   constructor(props, ...others) {
     super(props, ...others);
     this.Chart = createG2(chart => {
-      this.chart = chart;
-      chart.line().position('time*price').color('name').shape(props.shape).size(2);
-      chart.render();
-    });
-  }
+      chart.col('time', {
+        type: 'time',
+        mask: 'HH:MM:ss',
+        tickCount: 12
+      });
+      // chart.col(props.data_key, {
+      //   alias: props.key_name
+      // })
+      chart.legend({
+        position: 'bottom'
+      });
+      chart.axis('time', {
+        tickLine: {
+          stroke: '#000',
+          value: 6
+        },
+        title: null
+      })
+      chart.axis(props.data_key, {
+        tickLine: {
+          stroke: '#000',
+          value: 6
+        },
+        // labels: {
+        //   label: {
+        //     fill: '#000'
+        //   }
+        // },
+        line: {
+          stroke: '#000'
+        },
+        title: null
+      });
+      if (props.reflect_y) {
+        chart.coord().reflect('y')
+      }
+      chart.guide().text(['min', 'max'], props.key_name);
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.shape !== this.props.shape) {
-      this.chart.clear();
-      this.chart.line().position('time*price').color('name').shape(nextProps.shape).size(2);
-      this.chart.render();
-    }
+      chart.line().position('time*' + props.data_key).color(props.color).shape('line').size(2);
+      chart.render();
+
+      chart.on('tooltipchange', function(ev) {
+        var item = ev.items[0];
+        item.value = item.value + props.unit;
+      })
+    });
   }
 
   render() {
@@ -336,29 +57,110 @@ class HigherChart extends React.Component {
 
 class TrafficCaptureGeneralTab extends React.Component {
   state = {
-    shape: 'spline',
-    data: data.slice(0, data.length / 2 - 1),
-    width: 500,
-    height: 250,
+    shape: 'line',
+    data: [],
+    height: 200,
     plotCfg: {
-      margin: [10, 100, 50, 120],
+      margin: [10, 10, 50, 120],
     },
   }
-  changeHandler = () => {
-    this.setState({
-      shape: 'line',
-    });
+
+  formatTrafficUnit(size) {
+    if (size < 1024) {
+      return {scale: 1, name: 'bytes'}
+    } else if (size < 1024 * 1024) {
+      return {scale: 1024, name: 'kb'}
+    } else if (size < 1024 * 1024 * 1024) {
+      return {scale: 1024 * 1024, name: 'mb'}
+    } else {
+      return {scale: 1024 * 1024 * 1024, name: 'gb'}
+    }
   }
+
+  convertPackets(raw_packets) {
+    console.log(raw_packets)
+    var datas_with_time = {}
+    for (var i in raw_packets) {
+      var pkt = raw_packets[i];
+      var traffic_size = pkt.ether._len_;
+      var up_traffic_size = pkt.ether.src == this.props.mac ? traffic_size : 0;
+      var down_traffic_size = pkt.ether.dst == this.props.mac ? traffic_size : 0;
+
+      date_str = new Date(pkt._time_).format('yyyy-MM-dd hh:mm:ss');
+      if (datas_with_time[date_str]) {
+        datas_with_time[date_str].up_traffic += up_traffic_size;
+        datas_with_time[date_str].down_traffic += down_traffic_size;
+      } else {
+        datas_with_time[date_str] = {
+          up_traffic: up_traffic_size,
+          down_traffic: down_traffic_size
+        }
+      }
+    }
+
+    var max_up_traffic = 0;
+    var max_down_traffic = 0;
+
+    var datas = [];
+    for (var date_str in datas_with_time) {
+      var d_up_traffic = datas_with_time[date_str].up_traffic;
+      var d_down_traffic = datas_with_time[date_str].down_traffic;
+
+      datas.push({
+        time: date_str,
+        up_traffic: d_up_traffic,
+        down_traffic: d_down_traffic
+      });
+
+      max_up_traffic = max_up_traffic > d_up_traffic ? max_up_traffic : d_up_traffic;
+      max_down_traffic = max_down_traffic > d_down_traffic ? max_down_traffic : d_down_traffic;
+    }
+
+    var up_traffic_unit = this.formatTrafficUnit(max_up_traffic);
+    var down_traffic_unit = this.formatTrafficUnit(max_down_traffic);
+
+    for (var i in datas) {
+      datas[i].up_traffic = Math.round(datas[i].up_traffic/up_traffic_unit.scale * 100) / 100;
+      datas[i].down_traffic = Math.round(datas[i].down_traffic/down_traffic_unit.scale * 100) / 100;
+    }
+
+    return {
+      datas: datas,
+      up_unit_name: up_traffic_unit.name,
+      down_unit_name: down_traffic_unit.name
+    }
+  }
+
+  componentDidMount() { 
+  }
+
   render() {
+    var result = this.convertPackets(this.props.active);
+
     return <div>
-      <HigherChart
+      <TrafficChart
         shape={this.state.shape}
-        data={this.state.data}
-        width={this.state.width}
+        data={result.datas}
+        width={$('#traffic-general').width()}
         height={this.state.height}
-        plotCfg={this.state.plotCfg}
+        plotCfg={{margin: [20, 20, 30, 50]}}
+        data_key="up_traffic"
+        key_name={"上行流量(" + result.up_unit_name + ")"}
+        color="#293c55"
+        unit = {result.up_unit_name}
       />
-      <button onClick={this.changeHandler}>Change shape</button>
+      <TrafficChart
+        shape={this.state.shape}
+        data={result.datas}
+        width={$('#traffic-general').width()}
+        height={this.state.height}
+        plotCfg={{margin: [10, 20, 50, 50]}}
+        data_key="down_traffic"
+        key_name={"下行流量(" + result.down_unit_name + ")"}
+        color="#B03A5B"
+        unit = {result.down_unit_name}
+        reflect_y={true}
+      />
     </div>
   }
 }

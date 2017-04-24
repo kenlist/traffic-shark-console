@@ -88,48 +88,14 @@
             
             <div class="tab-content">
               <div role="tabpanel" class="tab-pane active" id="traffic-general">
-                <div id="c1"></div>
+                <img class="loading-img" src="{% static 'image/loading.gif' %}"/>
               </div>
               <div role="tabpanel" class="tab-pane" id="traffic-classify">Traffic Classify</div>
             </div>
 
           </div>
         </div>
-      </div>
-
-    <script>
-      $(window).load(function(){
-        var data = [
-          {genre: 'Sports', sold: 275},
-          {genre: 'Strategy', sold: 115},
-          {genre: 'Action', sold: 120},
-          {genre: 'Shooter', sold: 350},
-          {genre: 'Other', sold: 150},
-        ];
-
-        
-
-        var chart = new G2.Chart({
-          id: 'c1', // 指定图表容器 ID
-          width : $('#c1').width(),
-          height : 400 // 指定图表高度
-        });
-
-        chart.source(data, {
-          genre: {
-            alias: '游戏种类' // 列定义，定义该属性显示的别名
-          },
-          sold: {
-            alias: '销售量'
-          }
-        });
-
-        chart.interval().position('genre*sold').color('genre')
-
-        chart.render();
-
-      });
-    </script> -->
+      </div> -->
       
   </body>
 </html>

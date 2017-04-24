@@ -15,6 +15,7 @@ enum ReturnCode {
     #UNKNOWN_SESSION,
     #UNKNOWN_IP,
     #ACCESS_DENIED,
+    CAPTURE_NOT_READY,
 }
 
 struct Delay {
@@ -101,6 +102,8 @@ service TrafficSharkService {
     throws (1: TrafficControlException failure),
 
   /* traffic capture api */
+  TrafficControlRc getCapturePackets(1: string mac)
+    throws (1: TrafficControlException failure)
   TrafficControlRc startCapture(1: string mac)
     throws (1: TrafficControlException failure),
   TrafficControlRc stopCapture(1: string mac)

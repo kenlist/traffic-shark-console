@@ -11,7 +11,7 @@ function TSRestClient(endpoint) {
 
   this.api_call = function (method, urn, callback, data) {
     urn = _add_ending_slash(urn);
-    // alert("[" + method + "]" + this.endpoint + urn + "?" + JSON.stringify(data))
+    // console.log("[" + method + "]" + this.endpoint + urn + "?" + JSON.stringify(data))
     $.ajax({
       url: this.endpoint + urn,
       dataType: 'json',
@@ -59,6 +59,10 @@ TSRestClient.prototype.shapeMachine = function(callback, mac) {
 
 TSRestClient.prototype.unshapeMachine = function(callback, mac) {
   this.api_call('DELETE', 'mc', callback, mac);
+}
+
+TSRestClient.prototype.getCapturePackets = function(callback, mac) {
+  this.api_call('GET', 'capture/' + mac, callback);
 }
 
 TSRestClient.prototype.startCapture = function(callback, mac) {

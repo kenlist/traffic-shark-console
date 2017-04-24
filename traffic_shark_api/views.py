@@ -167,9 +167,24 @@ class ProfileApi(APIView) :
 class CaptureApi(APIView) :
 
     @serviced
-    def get(self, request, service):
+    def get(self, request, service, mac=None):
+        print 'CaptureApi get: {}'.format(mac)
+
+        if mac is None:
+            return Response(
+                {'details': 'invalid mac address'},
+                status=status.HTTP_401_UNAUTHORIZED)
+
+        try:
+            tcrc = service.getCapturePackets(mac)
+        except TrafficControlException as e:
+            return Response(e.message, status=status.HTTP_401_UNAUTHORIZED)
+        result = {'result': tcrc.code, 'message': tcrc.message}
+        if tcrc.code:
+            raise ParseError(detail=repr(result))
+
         return Response(
-            None, 
+            tcrc.message, 
             status=status.HTTP_200_OK)
         
     @serviced

@@ -157,7 +157,7 @@ class MachineSettingPanel extends React.Component {
     if (e.type == 'click') {
       ReactDOM.render(
         <div className="mb-content">
-          <CapturePanel notify={this.props.notify} onProfileConfirm={null} mac={mac} ip={ip} client={this.props.client} mcontrol={this.props.mcontrols[mac]} />
+          <CapturePanel notify={this.props.notify} onProfileConfirm={null} mac={mac} ip={ip} client={this.props.client} mcontrol={this.props.mcontrols[mac]} error={this.props.error} />
         </div>, document.getElementById('modalContainer'));
       showPanel();
     }
