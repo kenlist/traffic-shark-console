@@ -122,14 +122,14 @@ class TrafficSharkUI extends React.Component {
       //remove
     //   delete this.state.profiles[profile.name];
       this.forceUpdate();
-      return;
+      return true;
     }
 
     //check profile change
     if (objectEquals(this.state.profiles[profile.name], profile.tc_setting)) {
       // no change
       this.notify('success', 'Profile Update Success: no change');
-      return;
+      return true;
     }
 
     this.state.client.addProfile(function(result) {
@@ -143,6 +143,8 @@ class TrafficSharkUI extends React.Component {
         this.error('Profile Update Error: ', result);
       }
     }.bind(this), profile);
+
+    return true;
   }
 
   onMCRefresh(need_notify) {
