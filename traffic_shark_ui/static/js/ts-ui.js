@@ -126,10 +126,11 @@ class TrafficSharkUI extends React.Component {
     }
 
     //check profile change
-    // if (objectEquals(this.state.profiles[profile.name], profile.tc_setting)) {
-    //   // no change
-    //   return;
-    // }
+    if (objectEquals(this.state.profiles[profile.name], profile.tc_setting)) {
+      // no change
+      this.notify('success', 'Profile Update Success: no change');
+      return;
+    }
 
     this.state.client.addProfile(function(result) {
       //create or edit

@@ -1,7 +1,6 @@
 packages
 .DS_Store
 
-__init__.py
 db.sqlite3
 
 *.pyc

@@ -125,18 +125,28 @@ class LinkShapingSettings extends React.Component {
 class ProfileSettingPanel extends React.Component {
   state = {
     name: this.props.name,
-    tc_setting: this.props.tc_setting ? this.props.tc_setting : new TSSettings().getDefaultSettings()
+    tc_setting: this.props.tc_setting ? jQuery.extend(true, {}, this.props.tc_setting) : new TSSettings().getDefaultSettings(),
+    data_changed: false
   }
 
   handleConfirmClick(e) {
     if (this.props.onProfileConfirm) {
-      this.props.onProfileConfirm(this.state);
+      if (this.props.onProfileConfirm(this.state)) {
+        hidePanel();
+      }
+    } else {
+      hidePanel();
     }
-    hidePanel();
   }
 
   handleCancelClick(e) {
     hidePanel();
+  }
+
+  onlinkStateChange(newValue) {
+    this.setState({
+      data_changed: true
+    });
   }
 
   render() {
@@ -144,12 +154,12 @@ class ProfileSettingPanel extends React.Component {
 
     return (
       <div>
-          <button type="button" className="btn btn-success pull-right right-button" onClick={this.handleConfirmClick.bind(this)}>
-            Confirm
-          </button>        
-          <button type="button" className="btn btn-danger pull-right left-button" onClick={this.handleCancelClick.bind(this)}>
-            Cancel
-          </button>
+        <button type="button" className="btn btn-success pull-right right-button" onClick={this.handleConfirmClick.bind(this)} disabled={!this.state.data_changed}>
+          Confirm
+        </button>        
+        <button type="button" className="btn btn-danger pull-right left-button" onClick={this.handleCancelClick.bind(this)}>
+          Cancel
+        </button>
       
         <div className="page-header">
           <h1><small>{this.props.name ? "Edit" : "New"} Profile</small></h1>

@@ -61,7 +61,7 @@ class CapturePanel extends React.Component {
   state = {
     active_tab_name:"traffic-general",
     packets:[],
-    fetch_interval:5000 // update per 5 secs
+    fetch_interval:2000 // update per 2 secs
   }
 
   handleStartCaptureClick(mac, e) {

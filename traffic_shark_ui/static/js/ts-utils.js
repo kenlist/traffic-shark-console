@@ -42,6 +42,10 @@ var RecursiveLinkStateMixin = function (klass) {
         requestChange: function(newValue) {
           setPath(this.state, path, newValue);
           this.forceUpdate();
+
+          if (this.onlinkStateChange) {
+            this.onlinkStateChange(newValue);
+          }
         }.bind(this)
       };
     }
