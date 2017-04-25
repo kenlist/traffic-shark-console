@@ -84,7 +84,8 @@ class ProfileUpdateModal extends React.Component {
             <h4 className="modal-title" id="profileModalLabel">Profile Change Warning</h4>
           </div>
           <div className="modal-body">
-            <kbd>{this.props.name}</kbd> is being used by machines below, please confirm your update.
+            <kbd>{this.props.name}</kbd> is being used by machines below,
+            {this.props.is_remove ? " are you sure to remove?" : " please confirm your update."}
             <ol>
               {this.props.machines.map(function(mc) {
                 return (
@@ -195,9 +196,31 @@ class TrafficSharkUI extends React.Component {
       hidePanel();
       if (!profile.tc_setting) {
         //remove
-      //   delete this.state.profiles[profile.name];
-        this.forceUpdate();
-        return true;
+        this.state.client.removeProfile(function(result) {
+            // remove success
+          if (result.status >= 200 && result.status < 300) {
+            delete this.state.profiles[profile.name];
+
+            for (var mac in this.state.mcontrols) {
+              var mc = this.state.mcontrols[mac];
+              if (mc['profile_name'] == profile.name) {
+                delete mc['profile_name']
+                delete mc['new_profile_name']
+                delete mc['is_shaping']
+              }
+
+              if (mc['new_profile_name'] == profile.name) {
+                delete mc['new_profile_name']
+              }
+            }
+
+            this.forceUpdate();
+            this.notify('success', 'Profile Remove Success');
+          } else {
+            this.error('Profile Remove Error: ', result);
+          }
+        }.bind(this), profile.name);
+        return;
       }
 
       this.state.client.addProfile(function(result) {
@@ -214,12 +237,13 @@ class TrafficSharkUI extends React.Component {
     }
 
     if (machines.length != 0) {
+      var is_remove = !profile.tc_setting;
       ReactDOM.render(
-        <ProfileUpdateModal name={profile.name} machines={machines} onConfirm={profileChangeConfirm.bind(this)}/>, document.getElementById('profileModalContainer'))
+        <ProfileUpdateModal name={profile.name} machines={machines} is_remove={is_remove} onConfirm={profileChangeConfirm.bind(this)}/>, document.getElementById('profileModalContainer'))
       return false;
     }
 
-    profileChangeConfirm();
+    profileChangeConfirm.bind(this)();
     return true;
   }
 

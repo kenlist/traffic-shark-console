@@ -34,12 +34,10 @@ class ProfilePanel extends React.Component {
 
   handleRemoveClick(profile_name, e) {
     if (e.type == "click") {
-      if (confirm('Do you really want to remove profile:[' + profile_name + ']?')) {
-        if (this.props.onProfileUpdate) {
-          this.props.onProfileUpdate({
-            name: profile_name
-          })
-        }
+      if (this.props.onProfileUpdate) {
+        this.props.onProfileUpdate({
+          name: profile_name
+        })
       }
     }
   }

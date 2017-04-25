@@ -164,6 +164,28 @@ class ProfileApi(APIView) :
             status=status.HTTP_201_CREATED
         )
 
+    @serviced
+    def delete(self, request, service):
+        profile_name = request.data
+        print 'ProfileApi delete: {}'.format(profile_name)
+
+        if profile_name is None:
+            return Response(
+                {'details': 'invalid profile name'},
+                status=status.HTTP_401_UNAUTHORIZED)
+
+        try:
+            tcrc = service.removeProfile(profile_name)
+        except TrafficControlException as e:
+            return Response(e.message, status=status.HTTP_401_UNAUTHORIZED)
+        result = {'result': tcrc.code, 'message': tcrc.message}
+        if tcrc.code:
+            raise ParseError(detail=repr(result))
+
+        return Response(
+            '', 
+            status=status.HTTP_200_OK)
+
 class CaptureApi(APIView) :
 
     @serviced

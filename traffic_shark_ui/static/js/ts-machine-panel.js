@@ -53,22 +53,14 @@ class ProfileSelector extends React.Component {
   }
 
   render() {
-    function renderOption(name, selected) {
-      if (selected) {
-        return <option selected>{name}</option>
-      } else {
-        return <option>{name}</option>
-      }
-    }
-
     var options = [];
     for (var name in this.props.profiles) {
-      options.push(renderOption(name, this.props.current_name == name));
+      options.push(<option value={name}>{name}</option>);
     }
 
     return (
-      <select className="form-control" onChange={this.onSelectChange.bind(this)} disabled={this.props.disabled}>
-        <option disabled selected value> -- select a profile -- </option>
+      <select className="form-control" onChange={this.onSelectChange.bind(this)} disabled={this.props.disabled} value={this.props.current_name ? this.props.current_name : false}>
+        <option disabled selected value={false}> -- select a profile -- </option>
         {options}
       </select>
     )
@@ -197,7 +189,8 @@ class MachineSettingPanel extends React.Component {
       for (var i in mc_list) {
         var mc = mc_list[i];
         var mac = mc['mac'];
-        var is_control_disabled = !mc["online"];
+        var profile_name = mc["new_profile_name"] ? mc["new_profile_name"] : mc["profile_name"]
+        var is_control_disabled = !mc["online"] || !profile_name;
         var is_update_disabled = !mc["new_profile_name"] || mc["new_profile_name"] == mc["profile_name"];
         mc_render_list.push(
           <tr>
@@ -207,7 +200,7 @@ class MachineSettingPanel extends React.Component {
               <div><code>{mc["online"] ? mc["ip"] : "offline"}</code></div>
             </td>
             <td>
-              <ProfileSelector profiles={this.props.profiles} current_name={mc["profile_name"]} onProfileChange={this.onProfileChange.bind(this)} mac={mac} disabled={is_control_disabled}/>
+              <ProfileSelector profiles={this.props.profiles} current_name={profile_name} onProfileChange={this.onProfileChange.bind(this)} mac={mac} disabled={!mc["online"]}/>
             </td>
             <td>
               <ControlButton is_shaping={mc["is_shaping"]} onShapeClick={this.handleShapeClick.bind(this, mac)} onUnshapeClick={this.handleUnshapeClick.bind(this, mac)} disabled={is_control_disabled}/>
