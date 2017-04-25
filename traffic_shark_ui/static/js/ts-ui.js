@@ -53,6 +53,59 @@ class NotificationPanel extends React.Component {
   }
 };
 
+class ProfileUpdateModal extends React.Component {
+  constructor(props) {
+    super(props);
+    this.confirm_clicked = false;
+  }
+
+  componentDidMount() {
+    $('#profileModal').modal('show');
+    $('#profileModal').on('hidden.bs.modal', function (e) {
+      ReactDOM.unmountComponentAtNode(document.getElementById('profileModalContainer'));
+      if (this.confirm_clicked && this.props.onConfirm) {
+        this.props.onConfirm();
+      }
+    }.bind(this));
+  }
+
+  onConfirmClick(e) {
+    this.confirm_clicked = true;
+    $('#profileModal').modal('hide');
+  }
+
+  render() {
+    return(
+      <div className="modal fade" id="profileModal" tabindex="-1" role="dialog" aria-labelledby="profileModalLabel">
+      <div className="modal-dialog" role="document">
+        <div className="modal-content">
+          <div className="modal-header">
+            <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 className="modal-title" id="profileModalLabel">Profile Change Warning</h4>
+          </div>
+          <div className="modal-body">
+            <kbd>{this.props.name}</kbd> is being used by machines below, please confirm your update.
+            <ol>
+              {this.props.machines.map(function(mc) {
+                return (
+                  <li className="profile-modal-li">
+                    <kbd>{mc.mac}</kbd><code>{mc.ip}</code>
+                    <span>{mc.is_shaping ? "shaping" : ""}</span>
+                  </li>
+                  )
+              })}
+            </ol>
+          </div>
+          <div className="modal-footer">
+            <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" className="btn btn-primary" onClick={this.onConfirmClick.bind(this)}>Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>);
+  }
+};
+
 class TrafficSharkUI extends React.Component {
   state = {
     client: new TSRestClient(this.props.endpoint),
@@ -118,12 +171,6 @@ class TrafficSharkUI extends React.Component {
 
   onProfileUpdate(profile) {
     //todo: update profiles if there is changed(add or update or remove)
-    if (!profile.tc_setting) {
-      //remove
-    //   delete this.state.profiles[profile.name];
-      this.forceUpdate();
-      return true;
-    }
 
     //check profile change
     if (objectEquals(this.state.profiles[profile.name], profile.tc_setting)) {
@@ -132,18 +179,47 @@ class TrafficSharkUI extends React.Component {
       return true;
     }
 
-    this.state.client.addProfile(function(result) {
-      //create or edit
-      if (result.status >= 200 && result.status < 300) {
-        // add success
-        this.state.profiles[profile.name] = profile.tc_setting;
-        this.forceUpdate();
-        this.notify('success', 'Profile Update Success');
-      } else {
-        this.error('Profile Update Error: ', result);
+    var machines = [];
+    for (var mac in this.state.mcontrols) {
+      var mc = this.state.mcontrols[mac];
+      if (mc['profile_name'] == profile.name) {
+        machines.push({
+          ip: mc['ip'],
+          mac: mac,
+          is_shaping: mc['is_shaping']
+        });
       }
-    }.bind(this), profile);
+    }
 
+    function profileChangeConfirm() {
+      hidePanel();
+      if (!profile.tc_setting) {
+        //remove
+      //   delete this.state.profiles[profile.name];
+        this.forceUpdate();
+        return true;
+      }
+
+      this.state.client.addProfile(function(result) {
+        //create or edit
+        if (result.status >= 200 && result.status < 300) {
+          // add success
+          this.state.profiles[profile.name] = profile.tc_setting;
+          this.forceUpdate();
+          this.notify('success', 'Profile Update Success');
+        } else {
+          this.error('Profile Update Error: ', result);
+        }
+      }.bind(this), profile);
+    }
+
+    if (machines.length != 0) {
+      ReactDOM.render(
+        <ProfileUpdateModal name={profile.name} machines={machines} onConfirm={profileChangeConfirm.bind(this)}/>, document.getElementById('profileModalContainer'))
+      return false;
+    }
+
+    profileChangeConfirm();
     return true;
   }
 
@@ -170,6 +246,7 @@ class TrafficSharkUI extends React.Component {
         <NotificationPanel notifications={this.state.notifications} />
         <MachineSettingPanel mcontrols={this.state.mcontrols} notify={this.notify.bind(this)} onMCRefresh={this.onMCRefresh.bind(this)} profiles={this.state.profiles} client={this.state.client} error={this.error.bind(this)} />
         <ProfilePanel notify={this.notify.bind(this)} profiles={this.state.profiles} onProfileUpdate={this.onProfileUpdate.bind(this)} />
+        <div id="profileModalContainer" />
       </div>
     )
   }

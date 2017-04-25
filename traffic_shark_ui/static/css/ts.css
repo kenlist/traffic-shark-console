@@ -33,3 +33,16 @@ We're not using anchors, so make sure users know they can click on panel headers
 #collapseMachineSettings button.rightbtn {
   margin-left:10px;
 }
+
+#profileModal .modal-body ol {
+  margin-top: 10px;
+}
+
+li.profile-modal-li kbd {
+  background-color: green;
+}
+
+li.profile-modal-li span {
+  color: red;
+  margin-left: 20px;
+}
