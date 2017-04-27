@@ -70,7 +70,8 @@ struct MachineControlState {
   3: bool is_capturing,
   4: bool is_shaping,
   5: bool online,
-  6: i64 last_update_time,
+  6: string capture_filter,
+  7: i64 last_update_time,
 }
 
 struct MachineControl {
@@ -104,7 +105,7 @@ service TrafficSharkService {
   /* traffic capture api */
   TrafficControlRc getCapturePackets(1: string mac)
     throws (1: TrafficControlException failure)
-  TrafficControlRc startCapture(1: string mac)
+  TrafficControlRc startCapture(1: string mac, 2: string capture_filter)
     throws (1: TrafficControlException failure),
   TrafficControlRc stopCapture(1: string mac)
     throws (1: TrafficControlException failure),

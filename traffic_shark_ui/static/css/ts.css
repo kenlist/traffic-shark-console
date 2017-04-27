@@ -46,3 +46,32 @@ li.profile-modal-li span {
   color: red;
   margin-left: 20px;
 }
+
+.filter-box {
+  margin-bottom: 10px;
+}
+
+#notifications {
+  position: absolute;
+  top:10px;
+  bottom: 0;
+  right: 5px;
+  width: 400px;
+  opacity: 0.9;
+  pointer-events: none;
+  z-index: 1010;
+}
+
+#notifications i{
+  float:right;
+}
+
+div.notification-element-show {
+  animation:opacity_ani 1s 1;
+  -webkit-animation:opacity_ani 1s 1; /*Safari and Chrome*/
+}
+
+@-webkit-keyframes opacity_ani {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}

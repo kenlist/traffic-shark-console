@@ -211,8 +211,11 @@ class CaptureApi(APIView) :
         
     @serviced
     def post(self, request, service):
-        mac = request.data
-        print 'CaptureApi post: {}'.format(mac)
+        data = request.data
+        print 'CaptureApi post: {}'.format(data)
+
+        mac = data.get('mac')
+        capture_filter = data.get('filter')
 
         if mac is None:
             return Response(
@@ -220,7 +223,7 @@ class CaptureApi(APIView) :
                 status=status.HTTP_401_UNAUTHORIZED)
 
         try:
-            tcrc = service.startCapture(mac)
+            tcrc = service.startCapture(mac, capture_filter)
         except TrafficControlException as e:
             return Response(e.message, status=status.HTTP_401_UNAUTHORIZED)
         result = {'result': tcrc.code, 'message': tcrc.message}

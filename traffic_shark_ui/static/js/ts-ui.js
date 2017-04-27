@@ -17,13 +17,17 @@ var NOTIFICATION_TYPES = {
 class NotificationPanel extends React.Component {
   render() {
     var notifyNodes = this.props.notifications.map(function(item, idx, arr) {
-      var timeout = Math.floor((item.expire_at - new Date().getTime()) / 1000)
+      var timeout = Math.floor((item.expire_at - new Date().getTime()));
+      // console.log(timeout);
       var cls = "alert alert-" + (NOTIFICATION_TYPES[item.type] || item.type);
+      if (timeout > 0) {
+        cls += " notification-element-show";
+      }
+      
       return (
         <div className={cls} role="alert">
           <div className="row">
-            <div className="col-md-11">{item.message}</div>
-            <div className="col-md-1">{timeout}</div>
+            <div className="col-md-12">{item.message}</div>
           </div>
         </div>
       );
@@ -34,22 +38,7 @@ class NotificationPanel extends React.Component {
         <i>No notifications.</i>
       );
     }
-    return (
-      <div className="panel-group" id="accordionNotify" role="tablist" aria-multiselectable="false">
-        <div className="panel panel-default">
-          <div className="panel-heading" data-toggle="collapse" data-parent="#accordionNotify" href="#collapseNotify" aria-expanded="true" aria-controls="collapseNotify">
-            <h3 className="panel-title">
-              notifications{notifyNodes.length}
-            </h3>
-          </div>
-          <div id="collapseNotify" className="panel-collapse collapse in" role="tabpanel">
-            <div className="panel-body">
-              {notifyNodes}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+    return (<div>{notifyNodes}</div>);
   }
 };
 
@@ -265,9 +254,11 @@ class TrafficSharkUI extends React.Component {
   }
 
   render() {
+    ReactDOM.render(
+        <NotificationPanel notifications={this.state.notifications} />, document.getElementById('notifications'));
+
     return (
       <div>
-        <NotificationPanel notifications={this.state.notifications} />
         <MachineSettingPanel mcontrols={this.state.mcontrols} notify={this.notify.bind(this)} onMCRefresh={this.onMCRefresh.bind(this)} profiles={this.state.profiles} client={this.state.client} error={this.error.bind(this)} />
         <ProfilePanel notify={this.notify.bind(this)} profiles={this.state.profiles} onProfileUpdate={this.onProfileUpdate.bind(this)} />
         <div id="profileModalContainer" />

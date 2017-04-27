@@ -1,12 +1,7 @@
 class ProfileNameSetting extends React.Component {
   render() {
     var link_state = this.props.link_state("name");
-    var input = null
-    if (this.props.editable) {
-      input = <input id="inputProfileName" type="text" className="form-control" placeholder="Please Input Your Profile Name" valueLink={link_state} />
-    } else {
-      input = <span className="form-control">{link_state.value}</span>;
-    }
+    var input = <input id="inputProfileName" type="text" className="form-control" placeholder="Please Input Your Profile Name" valueLink={link_state} disabled={!this.props.editable} />
 
     return (
       <div className="form-horizontal accordion">

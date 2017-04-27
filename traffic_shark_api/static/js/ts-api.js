@@ -65,8 +65,8 @@ TSRestClient.prototype.getCapturePackets = function(callback, mac) {
   this.api_call('GET', 'capture/' + mac, callback);
 }
 
-TSRestClient.prototype.startCapture = function(callback, mac) {
-  this.api_call('POST', 'capture', callback, mac);
+TSRestClient.prototype.startCapture = function(callback, mac, filter) {
+  this.api_call('POST', 'capture', callback, {mac:mac, filter:filter});
 }
 
 TSRestClient.prototype.stopCapture = function(callback, mac) {
