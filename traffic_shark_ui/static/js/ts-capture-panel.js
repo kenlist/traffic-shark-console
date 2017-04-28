@@ -164,7 +164,7 @@ class CapturePanel extends React.Component {
 
         <TabControl is_capturing={is_capturing} packets={this.state.packets} onTabChange={this.handleTabChange.bind(this)} packets={this.state.packets}>
           <TrafficCaptureGeneralTab name="traffic-general" label="General" active={this.activePackets("traffic-general")} mac={this.props.mac} />
-          <TrafficCaptureClassifyTab name="traffic-classify" label="Classify" active={this.activePackets("traffic-classify")} mac={this.props.mac}/>
+          <TrafficCaptureDetailTab name="traffic-detail" label="Detail" active={this.activePackets("traffic-detail")} mac={this.props.mac}/>
         </TabControl>
       </div>
     );

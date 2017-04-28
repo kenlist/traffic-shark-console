@@ -75,3 +75,21 @@ div.notification-element-show {
   0%   { opacity: 0; }
   100% { opacity: 1; }
 }
+
+div.capture-detail-header table {
+  margin-bottom: 0px;
+}
+
+div.capture-detail-content {
+  overflow-y: scroll;
+  height: 400px;
+}
+
+table.table tbody tr td.hiddenRow {
+  padding: 0px;
+  border-top-width: 0px;
+}
+
+table.table tbody tr td.first-row {
+  border-top-width: 0px;
+}

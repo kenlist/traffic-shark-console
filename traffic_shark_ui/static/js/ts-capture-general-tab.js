@@ -46,7 +46,7 @@ class TrafficChart extends React.Component {
       chart.on('tooltipchange', function(ev) {
         var item = ev.items[0];
         item.value = item.value + props.unit;
-      })
+      });
     });
   }
 
@@ -78,7 +78,7 @@ class TrafficCaptureGeneralTab extends React.Component {
   }
 
   convertPackets(raw_packets) {
-    console.log(raw_packets)
+    // console.log(raw_packets)
     var datas_with_time = {}
     for (var i in raw_packets) {
       var pkt = raw_packets[i];
@@ -136,31 +136,36 @@ class TrafficCaptureGeneralTab extends React.Component {
 
   render() {
     var result = this.convertPackets(this.props.active);
+    // console.log(result.datas)
 
-    return <div>
-      <TrafficChart
-        shape={this.state.shape}
-        data={result.datas}
-        width={$('#traffic-general').width()}
-        height={this.state.height}
-        plotCfg={{margin: [20, 20, 30, 50]}}
-        data_key="up_traffic"
-        key_name={"上行流量(" + result.up_unit_name + ")"}
-        color="#293c55"
-        unit = {result.up_unit_name}
-      />
-      <TrafficChart
-        shape={this.state.shape}
-        data={result.datas}
-        width={$('#traffic-general').width()}
-        height={this.state.height}
-        plotCfg={{margin: [10, 20, 50, 50]}}
-        data_key="down_traffic"
-        key_name={"下行流量(" + result.down_unit_name + ")"}
-        color="#B03A5B"
-        unit = {result.down_unit_name}
-        reflect_y={true}
-      />
-    </div>
+    if (result.datas.length == 0) {
+      return <div></div>
+    } else {
+      return <div>
+        <TrafficChart
+          shape={this.state.shape}
+          data={result.datas}
+          width={$('#traffic-general').width()}
+          height={this.state.height}
+          plotCfg={{margin: [20, 20, 30, 50]}}
+          data_key="up_traffic"
+          key_name={"上行流量(" + result.up_unit_name + ")"}
+          color="#293c55"
+          unit = {result.up_unit_name}
+        />
+        <TrafficChart
+          shape={this.state.shape}
+          data={result.datas}
+          width={$('#traffic-general').width()}
+          height={this.state.height}
+          plotCfg={{margin: [10, 20, 50, 50]}}
+          data_key="down_traffic"
+          key_name={"下行流量(" + result.down_unit_name + ")"}
+          color="#B03A5B"
+          unit = {result.down_unit_name}
+          reflect_y={true}
+        />
+      </div>
+    }
   }
 }
