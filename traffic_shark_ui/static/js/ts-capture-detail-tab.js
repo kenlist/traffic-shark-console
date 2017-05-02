@@ -16,12 +16,12 @@ class PacketDetailTabControl extends React.Component {
     var ul_count = 0;
     var content_count = 0;
 
-    return (<div className="accordian-body collapse" id={pkt._time_}>
+    return (<div className="accordian-body collapse" id={pkt._time_  * 10000}>
         <ul className="nav nav-pills nav-stacked col-xs-1" role="tablist">
           {
 
             sortable_layer.map(function(sl) {
-              var sl_idx = sl[0] + pkt._time_;
+              var sl_idx = sl[0] + pkt._time_ * 10000;
               ul_count++;
               return (<li role="presentation" className={ul_count == 1 ? "active" : ""}>
                   <a href={"#" + sl_idx} aria-controls={sl_idx} role="tab" data-toggle="tab">
@@ -34,7 +34,7 @@ class PacketDetailTabControl extends React.Component {
         <div className="tab-content col-xs-11">
           {
             sortable_layer.map(function(sl) {
-              var sl_idx = sl[0] + pkt._time_;
+              var sl_idx = sl[0] + pkt._time_ * 10000;
               content_count++;
 
               var pkt_layer_output = [];
@@ -93,7 +93,7 @@ class TrafficCaptureDetailTab extends React.Component {
 
       var td_className = "col-xs-2 " + (idx == 0 ? "first-row" : "");
       packet_rows.push(
-        <tr data-toggle="collapse" data-target={"#" + pkt._time_} className="accordion-toggle">
+        <tr data-toggle="collapse" data-target={"#" + pkt._time_ * 10000} className="accordion-toggle">
           <td className={td_className}>{new Date(pkt._time_).format('yyyy-MM-dd hh:mm:ss +S')} </td>
           <td className={td_className}>{pkt.ip.src} </td>
           <td className={td_className}>{pkt.ip.dst} </td>
