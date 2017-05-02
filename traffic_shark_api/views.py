@@ -5,6 +5,7 @@ from traffic_shark_api.utils import get_client_ip
 from traffic_shark_thrift.ttypes import TrafficControlException
 
 from functools import wraps
+from django.http import HttpResponse
 from rest_framework.exceptions import APIException
 from rest_framework.exceptions import ParseError
 from rest_framework.response import Response
@@ -256,4 +257,51 @@ class CaptureApi(APIView) :
             '', 
             status=status.HTTP_200_OK)
 
+    @serviced
+    def patch(self, request, service):
+        mac = request.data
+        print 'CaptureApi patch: {}'.format(mac)
 
+        if mac is None:
+            return Response(
+                {'details': 'invalid mac address'},
+                status=status.HTTP_401_UNAUTHORIZED)
+        
+        try:
+            tcrc = service.exportPcap(mac)
+        except TrafficControlException as e:
+            return Response(e.message, status=status.HTTP_401_UNAUTHORIZED)
+        result = {'result': tcrc.code, 'message': tcrc.message}
+        if tcrc.code:
+            raise ParseError(detail=repr(result))
+
+        return Response(
+            '', 
+            status=status.HTTP_200_OK
+        )
+
+class PcapFileApi(APIView):
+
+    @serviced
+    def get(self, request, service, mac=None):
+        print 'PcapFileApi get: {}'.format(mac)
+
+        if mac is None:
+            return Response(
+                {'details': 'invalid mac address'},
+                status=status.HTTP_401_UNAUTHORIZED)
+
+        try:
+            tcrc = service.exportPcap(mac)
+        except TrafficControlException as e:
+            return Response(e.message, status=status.HTTP_401_UNAUTHORIZED)
+        result = {'result': tcrc.code, 'message': tcrc.message}
+        if tcrc.code:
+            raise ParseError(detail=repr(result))
+
+        # file = open('/Users/kenlist/serverprojects/traffic-shark-console/tmp.pcap', 'rb')
+        file = open(tcrc.message, 'rb')
+        response = HttpResponse(file, content_type='application/octet-stream')
+        response['Content-Disposition'] = 'attachment; filename={}.pcap'.format(mac)
+        return response
+            

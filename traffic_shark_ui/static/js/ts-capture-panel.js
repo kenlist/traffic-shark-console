@@ -103,6 +103,19 @@ class CapturePanel extends React.Component {
     hidePanel();
   }
 
+  handleExportClick(mac, e) {
+    this.props.client.exportPcap(function(result) {
+      if (result.status >= 200 && result.status < 300) {
+        this.props.notify('success', 'Export Pcap Success: ' + mac);
+        this.forceUpdate();
+
+        clearInterval(this.fetch_timer);
+      } else {
+        this.props.error('Export Pcap Failed: ', result);
+      }
+    }.bind(this), mac);
+  }
+
   handleTabChange(tab_name) {
     this.setState({
       active_tab_name:tab_name
@@ -148,6 +161,9 @@ class CapturePanel extends React.Component {
 
     return(
       <div>
+        <button type="button" className="btn btn-default pull-right right-button" onClick={this.handleExportClick.bind(this, this.props.mac)}>
+          Export pcap
+        </button>
         <CaptureControlButton is_capturing={is_capturing} onStartClick={this.handleStartCaptureClick.bind(this, this.props.mac)} onStopClick={this.handleStopCaptureClick.bind(this, this.props.mac)} />
         <button type="button" className="btn btn-danger pull-right left-button" onClick={this.handleCancelClick.bind(this)}>
           Cancel

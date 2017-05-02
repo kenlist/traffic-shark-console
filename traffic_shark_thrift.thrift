@@ -103,8 +103,10 @@ service TrafficSharkService {
     throws (1: TrafficControlException failure),
 
   /* traffic capture api */
+  TrafficControlRc exportPcap(1: string mac)
+    throws (1: TrafficControlException failure),
   TrafficControlRc getCapturePackets(1: string mac)
-    throws (1: TrafficControlException failure)
+    throws (1: TrafficControlException failure),
   TrafficControlRc startCapture(1: string mac, 2: string capture_filter)
     throws (1: TrafficControlException failure),
   TrafficControlRc stopCapture(1: string mac)

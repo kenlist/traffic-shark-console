@@ -43,7 +43,7 @@ class PacketDetailTabControl extends React.Component {
                 if (key[0] == '_') {    //private key
                   continue;
                 }
-                pkt_layer_output.push(<li className="col-xs-2">[{key}] : {layer[key]}</li>);
+                pkt_layer_output.push(<li className="col-xs-3">[{key}] : {layer[key]}</li>);
               }
 
               return (<div role="tabpanel" className={"tab-pane " + (content_count == 1 ? "active" : "")} id={sl_idx}>

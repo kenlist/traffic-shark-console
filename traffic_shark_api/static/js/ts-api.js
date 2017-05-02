@@ -61,6 +61,10 @@ TSRestClient.prototype.unshapeMachine = function(callback, mac) {
   this.api_call('DELETE', 'mc', callback, mac);
 }
 
+TSRestClient.prototype.exportPcap = function(callback, mac) {
+  this.api_call('PATCH', 'capture', callback, mac);
+}
+
 TSRestClient.prototype.getCapturePackets = function(callback, mac) {
   this.api_call('GET', 'capture/' + mac, callback);
 }
