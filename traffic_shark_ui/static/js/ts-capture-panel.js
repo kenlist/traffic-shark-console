@@ -107,9 +107,8 @@ class CapturePanel extends React.Component {
     this.props.client.exportPcap(function(result) {
       if (result.status >= 200 && result.status < 300) {
         this.props.notify('success', 'Export Pcap Success: ' + mac);
-        this.forceUpdate();
-
-        clearInterval(this.fetch_timer);
+        
+        window.location = "api/v1/pcap/" + mac;
       } else {
         this.props.error('Export Pcap Failed: ', result);
       }
@@ -161,7 +160,7 @@ class CapturePanel extends React.Component {
 
     return(
       <div>
-        <button type="button" className="btn btn-default pull-right right-button" onClick={this.handleExportClick.bind(this, this.props.mac)}>
+        <button type="button" className="btn btn-default pull-right right-button" onClick={this.handleExportClick.bind(this, this.props.mac)} disabled={!is_capturing}>
           Export pcap
         </button>
         <CaptureControlButton is_capturing={is_capturing} onStartClick={this.handleStartCaptureClick.bind(this, this.props.mac)} onStopClick={this.handleStopCaptureClick.bind(this, this.props.mac)} />

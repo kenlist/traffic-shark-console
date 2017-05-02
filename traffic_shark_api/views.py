@@ -281,6 +281,7 @@ class CaptureApi(APIView) :
         )
 
 class PcapFileApi(APIView):
+    DEFAULT_PCAP_PATH = '/tmp/pcaps/'
 
     @serviced
     def get(self, request, service, mac=None):
@@ -291,17 +292,11 @@ class PcapFileApi(APIView):
                 {'details': 'invalid mac address'},
                 status=status.HTTP_401_UNAUTHORIZED)
 
-        try:
-            tcrc = service.exportPcap(mac)
-        except TrafficControlException as e:
-            return Response(e.message, status=status.HTTP_401_UNAUTHORIZED)
-        result = {'result': tcrc.code, 'message': tcrc.message}
-        if tcrc.code:
-            raise ParseError(detail=repr(result))
+        pcap_path = self.DEFAULT_PCAP_PATH + "[" + mac + "].pcap"
 
         # file = open('/Users/kenlist/serverprojects/traffic-shark-console/tmp.pcap', 'rb')
-        file = open(tcrc.message, 'rb')
+        file = open(pcap_path, 'rb')
         response = HttpResponse(file, content_type='application/octet-stream')
-        response['Content-Disposition'] = 'attachment; filename={}.pcap'.format(mac)
+        response['Content-Disposition'] = 'attachment; filename=[{}].pcap'.format(mac)
         return response
             
