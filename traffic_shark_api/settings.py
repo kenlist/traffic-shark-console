@@ -3,7 +3,7 @@ from django.conf import settings
 USER_SETTINGS = getattr(settings, 'TS_API', None)
 
 DEFAULTS = {
-    'TSD_HOST': '192.168.2.103',
+    'TSD_HOST': '0.0.0.0',
     'TSD_PORT': 9090,
     # Default timeout is a day in seconds
     'DEFAULT_TC_TIMEOUT': 24 * 60 * 60,
