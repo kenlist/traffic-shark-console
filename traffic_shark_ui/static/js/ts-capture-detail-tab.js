@@ -81,6 +81,7 @@ class TrafficCaptureDetailTab extends React.Component {
 
   render() {
     var raw_packets = this.props.active ? this.props.active.reverse() : [];
+    // console.log(raw_packets);
     
     var packet_rows = [];
     for (var idx in raw_packets) {
@@ -134,40 +135,3 @@ class TrafficCaptureDetailTab extends React.Component {
     );
   }
 }
-
-
-      // <div>
-      //   <div>
-      //     <table className="table table-striped">
-      //       <thead>
-      //         <tr>
-      //           <th>Time</th>
-      //           <th>Source IP</th>
-      //           <th>Destination IP</th>
-      //           <th>Packet Size</th>
-      //         </tr>
-      //       </thead>
-      //     </table>
-      //   </div>
-      //   <div className="capture-detail-container">
-      //     <table className="table table-condensed">
-      //       <tbody>
-      //         {
-      //           raw_packets.map(function(pkt) {
-      //             if (!pkt.ip) {
-      //               return null;
-      //             }
-      //             return (
-      //               <tr>
-      //                 <td>{new Date(pkt._time_).format('yyyy-MM-dd hh:mm:ss')} </td>
-      //                 <td>{pkt.ip.src} </td>
-      //                 <td>{pkt.ip.dst} </td>
-      //                 <td>{pkt.ether._len_} bytes</td>
-      //               </tr>
-      //             );
-      //           })
-      //         }
-      //       </tbody>
-      //     </table>
-      //   </div>
-      // </div>

@@ -12,14 +12,28 @@ class CaptureControlButton extends React.Component {
 
 class TabControl extends React.Component {
   componentDidMount() {
-    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-      if (this.props.onTabChange) {
-        this.props.onTabChange(e.target.getAttribute("aria-controls"));
-      }
-    }.bind(this))
+    this.attached = false;
+    this.attachTabHandler();
   }
 
   componentWillUnmount() {
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!this.attached) {
+      this.attachTabHandler();
+    }
+  }
+
+  attachTabHandler() {
+    if ($('a[data-toggle="tab"]').length != 0) {
+      this.attached = true;
+      $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        if (this.props.onTabChange) {
+          this.props.onTabChange(e.target.getAttribute("aria-controls"));
+        }
+      }.bind(this));
+    }
   }
 
   render() {
@@ -85,14 +99,13 @@ class CapturePanel extends React.Component {
   }
 
   handleStopCaptureClick(mac, e) {
+    clearInterval(this.fetch_timer);
     this.props.client.stopCapture(function(result) {
       if (result.status >= 200 && result.status < 300) {
         this.props.mcontrol['is_capturing'] = false;
 
         this.props.notify('success', 'Stop Capture Success: ' + mac);
         this.forceUpdate();
-
-        clearInterval(this.fetch_timer);
       } else {
         this.props.error('Stop Capture Failed: ', result);
       }
@@ -116,6 +129,7 @@ class CapturePanel extends React.Component {
   }
 
   handleTabChange(tab_name) {
+    // console.log(tab_name);
     this.setState({
       active_tab_name:tab_name
     });
@@ -135,6 +149,7 @@ class CapturePanel extends React.Component {
   }
 
   activePackets(name) {
+    // console.log(this.state.packets);
     return this.state.active_tab_name == name ? this.state.packets : null;
   }
 
