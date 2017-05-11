@@ -9,7 +9,7 @@
 }
 
 .arrow {
-    border-color: #555;
+    border-color: red;
     border-style: solid;
     cursor: pointer;
     display: inline-block;
